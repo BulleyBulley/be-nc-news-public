@@ -1,10 +1,7 @@
 const db = require('../connection')
 const format = require("pg-format");
-const { formatTopicsData, formatUsersData, formatArticlesData, formatCommentsData, createSlugRef } = require ("../utils/data-manipulation.js")
+const { formatTopicsData, formatUsersData, formatArticlesData, formatCommentsData, dateConverter, createSlugRef } = require ("../utils/data-manipulation.js")
 
-
-
-//const promise1 = []
 
 const seed = (data) => {
   const { articleData, commentData, topicData, userData } = data;
@@ -92,7 +89,7 @@ const seed = (data) => {
   })
   .then (() => {
     //console.log(result.rows)
-    //const slugRef = createSlugRef(result)
+    
     const queryStr = format (
     `
     INSERT INTO articles
@@ -120,7 +117,7 @@ const seed = (data) => {
   return db.query(queryStr) 
   })
   .then ((result) => {
-    console.log(result.rows)
+    //console.log(result.rows)
     console.log('All tables seeded')
       })
 
