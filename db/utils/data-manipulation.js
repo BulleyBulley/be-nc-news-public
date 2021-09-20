@@ -1,5 +1,10 @@
 // extract any functions you are using to manipulate your data, into this file
 
+// function dateFilter (dateInput) {
+
+// }
+    
+
 exports.formatTopicsData = (topicData) => {
     const formattedTopicsData = topicData.map((topic) => {
     return [topic.slug, topic.description];    
@@ -15,8 +20,9 @@ exports.formatUsersData = (userData) => {
 }
 
 exports.formatArticlesData = (articleData) => {
+    
     const formattedArticlesData = articleData.map((article) => {
-        return [article.title, article.topic, article.author, article.body, article.create_at, article.votes]; 
+        return [article.title, article.topic, article.author, article.body, article.created_at.toLocaleString('en-UK', {hour12: false}), article.votes]; 
     })
     return formattedArticlesData;
 }
@@ -46,6 +52,20 @@ exports.dateConverter = (dateInput) => {
     
     }
 
+
+
+
+// function dateConverter (dateInput) {
+//         let date = new Date(dateInput),
+//             month = '' + (date.getMonth() + 1),
+//             day = '' + date.getDate(),
+//             year = date.getFullYear();
+//         if (month.length < 2) 
+//             month = '0' + month;
+//         if (day.length < 2) 
+//             day = '0' + day;
+//         return [day, month, year].join('-');
+// }
 
 
 // exports.createSlugRef = (topicsRows) => {

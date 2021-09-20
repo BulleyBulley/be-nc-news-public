@@ -84,7 +84,7 @@ describe('formatUsersData', () => {
     });
   });
 
-describe.only('formatArticlesData', () => {
+describe('formatArticlesData', () => {
     test('returns an empty array for no data', () => {
       const articleData = [];
       const expectedFormattedData = [];
@@ -103,7 +103,7 @@ describe.only('formatArticlesData', () => {
             votes: 100
           },
       ];
-      const expectedFormattedData = [['Living in the shadow of a great man', 'mitch', 'butter_bridge', 'I find this existence challenging', '06-04-2020', 100 ,  ]];
+      const expectedFormattedData = [['Living in the shadow of a great man', 'mitch', 'butter_bridge', 'I find this existence challenging', '7/9/2020, 22:11:00', 100 ,  ]];
       expect(formatArticlesData(articleData)).toEqual(
         expectedFormattedData
       );
