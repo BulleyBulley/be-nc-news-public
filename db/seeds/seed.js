@@ -44,7 +44,7 @@ const seed = (data) => {
    CREATE TABLE articles (
      article_id SERIAL PRIMARY KEY,
       title VARCHAR(200) NOT NULL,
-      body TEXT NOT NULL,
+      body VARCHAR(2000) NOT NULL,
       votes INT DEFAULT 0,
       topic VARCHAR(200) REFERENCES topics(slug) ON DELETE CASCADE,
       author VARCHAR(100) REFERENCES users(username) ON DELETE CASCADE,
@@ -78,6 +78,7 @@ const seed = (data) => {
     return db.query(queryStr) 
   })
   .then(() => {
+    //console.log(result.rows)
     const queryStr = format (
       ` INSERT INTO users
       (username, avatar_url, name)
@@ -90,7 +91,7 @@ const seed = (data) => {
     return db.query(queryStr)
   })
   .then (() => {
-    //console.log(topicData.rows)
+    //console.log(result.rows)
     //const slugRef = createSlugRef(result)
     const queryStr = format (
     `
@@ -105,6 +106,7 @@ const seed = (data) => {
   return db.query(queryStr)  
   })
   .then (() => {
+    //console.log(result.rows)
   const queryStr = format (
     `
     INSERT INTO comments
@@ -117,12 +119,13 @@ const seed = (data) => {
   )  
   return db.query(queryStr) 
   })
-  .then (() => {
+  .then ((result) => {
+    console.log(result.rows)
     console.log('All tables seeded')
       })
 
   
-
+//create date conversion function
   
 
 
