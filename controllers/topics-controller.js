@@ -1,4 +1,4 @@
-const { showAllTopics} = require('../models/topics.model')
+const { showAllTopics, fetchArticle } = require('../models/topics.model')
 
 exports.getTopics = (req, res, next) => {
     //console.log(req.query)
@@ -13,4 +13,12 @@ exports.getTopics = (req, res, next) => {
     .catch((err) => {
         next(err);
     })
+}
+
+exports.getArticleById = async (req, res) => {
+    //console.log(req.params)
+    const { article_id }  = req.params
+    //console.log({ articleId} )
+    const articleItem = await fetchArticle(article_id);
+    res.status(200).send({ article: articleItem})
 }
