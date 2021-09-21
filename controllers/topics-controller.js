@@ -15,10 +15,13 @@ exports.getTopics = (req, res, next) => {
     })
 }
 
-exports.getArticleById = async (req, res) => {
-    //console.log(req.params)
+exports.getArticleById = async (req, res, next) => {
+try {
     const { article_id }  = req.params
-    //console.log({ articleId} )
+    
     const articleItem = await fetchArticle(article_id);
     res.status(200).send({ article: articleItem})
+} catch (err) {
+    next(err)
+}
 }

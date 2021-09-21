@@ -31,8 +31,8 @@ describe("GET /api/topics", () => {
   });
 });
 
-describe.only("GET /api/articles/:article_id", () => {
-  test("200: Responds with an article object, with comment count added", async () => {
+describe("GET /api/articles/:article_id", () => {
+  test("200: Responds with an article object, with comment_count added", async () => {
     const article_id = 9;
     const { body } = await request(app)
       .get(`/api/articles/${article_id}`)
@@ -50,6 +50,16 @@ describe.only("GET /api/articles/:article_id", () => {
         comment_count: expect.any(Number),
       });
     });
+  });
+  test("404: valid but non-existent article_id", async () => {
+    const res = await request(app).get("/api/articles/99999").expect(404);
+    expect(res.body.msg).toBe("Article Not Found");
+  });
+  test("400: bad article_id", async () => {
+    const res = await request(app)
+      .get("/api/articles/whatabadarticleyouare")
+      .expect(400);
+    expect(res.body.msg).toBe("Bad Request");
   });
 });
 
