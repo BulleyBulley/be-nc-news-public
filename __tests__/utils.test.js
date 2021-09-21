@@ -9,7 +9,6 @@ const {
 describe("formatTopicsData", () => {
   test("returns an empty array for no data", () => {
     const topicData = [];
-    //const gameRef = {};
     const expectedFormattedData = [];
     expect(formatTopicsData(topicData)).toEqual(expectedFormattedData);
   });
@@ -44,7 +43,6 @@ describe("formatTopicsData", () => {
 describe("formatUsersData", () => {
   test("returns an empty array for no data", () => {
     const userData = [];
-    //const gameRef = {};
     const expectedFormattedData = [];
     expect(formatUsersData(userData)).toEqual(expectedFormattedData);
   });
@@ -143,7 +141,7 @@ describe("formatArticlesData", () => {
   });
 });
 
-describe.only("formatCommentsData", () => {
+describe("formatCommentsData", () => {
   test("returns an empty array for no data", () => {
     const commentData = [];
     const expectedFormattedData = [];

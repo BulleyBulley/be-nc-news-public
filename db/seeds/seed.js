@@ -21,7 +21,7 @@ const seed = (data) => {
       return db.query("DROP TABLE IF EXISTS comments CASCADE;");
     })
     .then(() => {
-      console.log("All tables dropped");
+      //console.log("All tables dropped");
     })
     .then(() => {
       return db.query(`
@@ -62,7 +62,7 @@ const seed = (data) => {
     );`);S
     })
     .then(() => {
-      console.log("All tables created");
+      //console.log("All tables created");
     })
     .then(() => {
       const queryStr = format(
@@ -120,7 +120,7 @@ const seed = (data) => {
     })
     .then(() => {
       //console.log(result.rows)
-      console.log("All tables seeded");
+      //console.log("All tables seeded");
     });
 
   //add comments tests
