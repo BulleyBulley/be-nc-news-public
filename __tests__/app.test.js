@@ -9,11 +9,15 @@ afterAll(() => db.end());
 
 describe("GET /api", () => {
   test("200: JSON object with msg key", async () => {
-    const { body } = await request(app).get("/api").expect(200);
+    const { body } = await request(app)
+    .get("/api")
+    .expect(200);
     expect(body).toHaveProperty("msg", "Connection Success");
   });
   test("404: Invalid URL returns 404 error and message", async () => {
-    const res = await request(app).get("/api/thropics").expect(404);
+    const res = await request(app)
+    .get("/api/thropics")
+    .expect(404);
     expect(res.body.msg).toBe("Invalid URL");
   });
 });
@@ -52,7 +56,9 @@ describe("GET /api/articles/:article_id", () => {
     });
   });
   test("404: valid but non-existent article_id", async () => {
-    const res = await request(app).get("/api/articles/99999").expect(404);
+    const res = await request(app)
+    .get("/api/articles/99999")
+    .expect(404);
     expect(res.body.msg).toBe("Article Not Found");
   });
   test("400: bad article_id", async () => {
@@ -62,6 +68,27 @@ describe("GET /api/articles/:article_id", () => {
     expect(res.body.msg).toBe("Bad Request");
   });
 });
+
+  describe.only('PATCH /api/articles/:article_id', () => {
+    test('200: Accepts update object and responds with updated article', async () => {
+      const article_id = 1;
+      const articleUpdate =  { inc_votes: 25 }
+      const { body } = await request(app)
+      .patch(`/api/articles/${article_id}`)
+      .send(articleUpdate)
+      .expect(200)
+      expect(body).toMatchObject({
+        author: expect.any(String),
+        title: expect.any(String),
+        article_id: expect.any(Number),
+        body: expect.any(String),
+        topic: expect.any(String),
+        created_at: expect.any(String),
+        votes: expect.any(Number),
+      });
+    });
+  });
+
 
 // test("200: Sorts all treasures by age by default", () => {
 //   return request(app)
