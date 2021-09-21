@@ -8,25 +8,27 @@ beforeEach(() => seed(testData));
 afterAll(() => db.end());
 
 describe("GET /api", () => {
-    test("200: JSON object with msg key", () => {
-      return request(app)
+    test("200: JSON object with msg key", async () => {
+      const { body } = await request(app)
         .get("/api")
-        .expect(200)
-        .then((res) => {
-          console.log(res.body);
-          expect(res.body).toHaveProperty("msg", "Connection Success");
-        });
+        .expect(200);
+          expect(body).toHaveProperty("msg", "Connection Success");
     });
+    test("404: Invalid URL returns 404 error and message", async () => {
+        const res = await request(app)
+        .get('/api/thropics')
+        .expect(404)
+        expect(res.body.msg).toBe('Invalid URL')
+    })
   });
 
-  describe.only("GET /api/topics", () => {
-    test("200: Returns all topics available", () => {
-      return request(app)
+  describe("GET /api/topics", () => {
+    test("200: Returns all topics available", async () => {
+      const { body } = await request(app)
         .get("/api/topics")
-        .expect(200)
-        .then((res) => {
-          expect(res.body.topics.length).toBeGreaterThan(1);
-          res.body.topics.forEach((topic) => {
+        .expect(200);
+          expect(body.topics.length).toBeGreaterThan(1);
+          body.topics.forEach((topic) => {
             expect(topic).toMatchObject({
               slug: expect.any(String),
               description: expect.any(String),
@@ -72,4 +74,4 @@ describe("GET /api", () => {
     //     })
     //   })
     // });
-  });
+  
