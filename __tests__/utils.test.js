@@ -168,6 +168,7 @@ describe.only("formatCommentsData", () => {
         "4/6/2020, 14:17:00",
       ],
     ];
+    //console.log(formatCommentsData(commentData))
     expect(formatCommentsData(commentData)).toEqual(expectedFormattedData);
   });
   test("does not mutate the original reviewData", () => {

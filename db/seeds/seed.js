@@ -57,9 +57,9 @@ const seed = (data) => {
       author VARCHAR(100) REFERENCES users(username) ON DELETE CASCADE,
       article_id INT REFERENCES articles(article_id) ON DELETE CASCADE,
       votes INT DEFAULT 0,
-      created_at DATE,
+      created_at VARCHAR(50),
       body TEXT
-    );`);
+    );`);S
     })
     .then(() => {
       console.log("All tables created");
