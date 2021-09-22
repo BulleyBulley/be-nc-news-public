@@ -158,24 +158,31 @@ describe("GET /api/articles/:article_id", () => {
       const { body } = await request(app)
       .get(`/api/articles`)
       .expect(200)
-      expect(body.allArticles).toBeSorted("date")
+      expect(body.allArticles).toBeSorted({key : 'created_at', descending: true} )
     })
     test('200: Sorts all articles by query passed' , async () => {
       const { body } = await request(app)
       .get(`/api/articles?sort_by=title`)
       .expect(200)
-      expect(body.allArticles).toBeSorted("title")
+      expect(body.allArticles).toBeSorted({key : 'title', descending: true} )
     })
     test('200: Sorts all articles ascending by query passed' , async () => {
       const { body } = await request(app)
       .get(`/api/articles?sort_by=author&order=asc`)
       .expect(200)
-      expect(body.allArticles).toBeSorted("author", {ascending: true})
+      expect(body.allArticles).toBeSorted({key : 'author', descending: false })
+    })
+    test('200: Shows only topics by query passed' , async () => {
+      const { body } = await request(app)
+      .get(`/api/articles?topic=football`)
+      .expect(200)
+      body.allArticles.forEach((article) => {
+        expect(article.topic).toEqual('football');
     })
 
   });
 
-
+  })
 
 
 

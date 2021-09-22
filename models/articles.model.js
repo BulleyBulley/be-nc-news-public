@@ -38,15 +38,15 @@ exports.fetchArticle = async (article_id) => {
     FROM articles
     LEFT JOIN comments ON articles.article_id = comments.article_id
     GROUP BY articles.article_id`;
+    
+    if (topic) {
+        queryStr += ` HAVING articles.topic = '$1'`,[topic]
+    }
 
-    queryStr += ` ORDER BY articles.${sort_by} ${order};`
-    const result = await db.query(queryStr)
-    //console.log(result.rows)
+    queryStr += ` ORDER BY ${sort_by} ${order};`
+        const result = await db.query(queryStr)
+    
     return result.rows
+  
     
-    
-      
-    
-
-    return result.rows
   }

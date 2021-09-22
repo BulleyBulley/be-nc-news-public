@@ -32,7 +32,7 @@ exports.formatArticlesData = (articleData) => {
       article.topic,
       article.author,
       article.body,
-      article.created_at.toLocaleString("en-UK", { hour12: false }),
+      article.created_at,
       article.votes,
     ];
   });
@@ -46,7 +46,7 @@ exports.formatCommentsData = (commentData) => {
       comment.votes,
       comment.author,
       comment.article_id,
-      comment.created_at.toLocaleString("en-UK", { hour12: false }),
+      comment.created_at,
     ];
   });
   return formattedCommentsData;
