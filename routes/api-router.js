@@ -2,6 +2,7 @@ const express = require('express');
 const apiRouter = express.Router();
 const { getTopics } = require('../controllers/topics-controller.js')
 const { getArticleById, patchArticleById, getAllArticles } = require('../controllers/articles-controller.js')
+const { getCommentsByArticleId } = require('../controllers/comments-controller.js')
 
 
 apiRouter.get('/', (req, res, next) => {
@@ -11,9 +12,9 @@ apiRouter.get('/', (req, res, next) => {
 
 apiRouter.get('/topics', getTopics)
 apiRouter.get('/articles', getAllArticles)
-
 apiRouter.get('/articles/:article_id', getArticleById)
-
 apiRouter.patch('/articles/:article_id', patchArticleById)
+
+apiRouter.get('/articles/:article_id/comments', getCommentsByArticleId)
 
 module.exports = apiRouter;
