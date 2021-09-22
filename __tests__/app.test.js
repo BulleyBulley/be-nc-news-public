@@ -166,6 +166,12 @@ describe("GET /api/articles/:article_id", () => {
       .expect(200)
       expect(body.allArticles).toBeSorted("title")
     })
+    test('200: Sorts all articles ascending by query passed' , async () => {
+      const { body } = await request(app)
+      .get(`/api/articles?sort_by=author&order=asc`)
+      .expect(200)
+      expect(body.allArticles).toBeSorted("author", {ascending: true})
+    })
 
   });
 

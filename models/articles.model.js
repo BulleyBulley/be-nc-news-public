@@ -41,7 +41,7 @@ exports.fetchArticle = async (article_id) => {
 
     queryStr += ` ORDER BY articles.${sort_by} ${order};`
     const result = await db.query(queryStr)
-    console.log(result.rows)
+    //console.log(result.rows)
     return result.rows
     
     
