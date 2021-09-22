@@ -11,7 +11,7 @@ app.use(handleCustomErrors);
 app.use(handle500Errors);
 
 app.all('*', (req, res) => {
-  console.log('Got all the way down here........')
+  //console.log('Got all the way down here........')
     res.status(404).send({ msg: 'Invalid URL' })
   })
 

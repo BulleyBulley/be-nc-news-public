@@ -56,28 +56,28 @@ describe("GET /api/articles/:article_id", () => {
     });
   });
   test("404: valid but non-existent article_id", async () => {
-    const res = await request(app)
+    const { body } = await request(app)
     .get("/api/articles/99999")
     .expect(404);
-    expect(res.body.msg).toBe("Article Not Found");
+    expect(body.msg).toBe("Article Not Found");
   });
   test("400: bad article_id", async () => {
-    const res = await request(app)
+    const { body } = await request(app)
       .get("/api/articles/whatabadarticleyouare")
       .expect(400);
-    expect(res.body.msg).toBe("Bad Request");
+    expect(body.msg).toBe("Bad Request");
   });
 });
 
-  describe.only('PATCH /api/articles/:article_id', () => {
+  describe('PATCH /api/articles/:article_id', () => {
     test('200: Accepts update object and responds with updated article', async () => {
-      const article_id = 1;
+      const article_id = 4;
       const articleUpdate =  { inc_votes: 25 }
       const { body } = await request(app)
       .patch(`/api/articles/${article_id}`)
       .send(articleUpdate)
       .expect(200)
-      expect(body).toMatchObject({
+      expect(body.article).toMatchObject({
         author: expect.any(String),
         title: expect.any(String),
         article_id: expect.any(Number),
@@ -85,8 +85,52 @@ describe("GET /api/articles/:article_id", () => {
         topic: expect.any(String),
         created_at: expect.any(String),
         votes: expect.any(Number),
+        //comment_count: expect.any(Number),
       });
     });
+    test('Vote count should increase by 25 to 125 for article_id 1', async () => {
+      const article_id = 1;
+      const articleUpdate =  { inc_votes: 25 }
+      const { body } = await request(app)
+      .patch(`/api/articles/${article_id}`)
+      .send(articleUpdate)
+      expect(body.article.votes).toEqual(125)
+    });
+    test("404: valid but non-existent article_id", async () => {
+      const article_id = 9999;
+      const articleUpdate =  { inc_votes: 25 }
+      const { body } = await request(app)
+      .patch(`/api/articles/${article_id}`)
+      .send(articleUpdate)
+      .expect(404);
+      expect(body.msg).toBe("Article Not Found");
+    });
+    test("400: bad article_id", async () => {
+        const articleUpdate =  { inc_votes: 25 }
+        const { body } = await request(app)
+        .patch("/api/articles/whatabadarticleyouare")
+        .send(articleUpdate)
+        .expect(400);
+      expect(body.msg).toBe("Bad Request");
+    });
+    test("400: no inc_votes on request body", async () => {
+      const article_id = 1;
+      const articleUpdate =  { inc_nothing : 5 }
+      const { body } = await request(app)
+      .patch(`/api/articles/${article_id}`)
+      .send(articleUpdate)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("400: Other property on request body", async () => {
+    const article_id = 1;
+    const articleUpdate =  { inc_votes : 5, favourite_bucket : 'medium bucket' }
+    const { body } = await request(app)
+    .patch(`/api/articles/${article_id}`)
+    .send(articleUpdate)
+    .expect(400);
+  expect(body.msg).toBe("Bad Request");
+});
   });
 
 

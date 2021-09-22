@@ -10,16 +10,19 @@ exports.getArticleById = async (req, res, next) => {
         next(err)
     }
     }
-    exports.patchArticleById = (req, res) => {
-        const article_id = req.params.article_id;
+    exports.patchArticleById = (req, res, next) => {
+        if (Object.keys(req.body).length > 1) {
+            res.status(400).send({ msg:'Bad Request' })
+        }
+        const { article_id } = req.params;
         const patchInfo  = req.body.inc_votes;
-        //console.log(req.body)
-        //console.log(patchInfo)
-      
         updateArticleById(article_id, patchInfo).then((updatedArticle) => {
-            console.log(updatedArticle)
-          res.status(200).send(updatedArticle);
-        });
+          res.status(200).send({article: updatedArticle});
+        })
+        .catch((err) => {
+            next(err)
+        })
+        //rewrite using await
       };
 
 

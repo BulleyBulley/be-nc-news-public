@@ -18,14 +18,18 @@ exports.fetchArticle = async (article_id) => {
   };
 
   exports.updateArticleById = (article_id, patchInfo) => {
-    //console.log(patchInfo)
     return db
       .query(
         `UPDATE articles SET votes = $1 + votes WHERE article_id = $2 RETURNING *;`,
         [patchInfo, article_id]
       )
       .then((result) => {
-        //console.log(result.rows[0])
+        if (result.rows.length === 0) {
+          return Promise.reject({status:404, msg: "Article Not Found"})
+        }
+        if (result.rows[0].votes === null ) {
+          return Promise.reject({status:400, msg: "Bad Request"})
+        }
         return result.rows[0];
       });
   }; 
