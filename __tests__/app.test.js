@@ -37,7 +37,7 @@ describe("GET /api/topics", () => {
 
 describe("GET /api/articles/:article_id", () => {
   test("200: Responds with an article object, with comment_count added", async () => {
-    const article_id = 9;
+    const article_id = 1;
     const { body } = await request(app)
       .get(`/api/articles/${article_id}`)
       .expect(200);
@@ -51,7 +51,7 @@ describe("GET /api/articles/:article_id", () => {
         topic: expect.any(String),
         created_at: expect.any(String),
         votes: expect.any(Number),
-        comment_count: expect.any(Number),
+        comment_count: expect.any(String),
       });
     });
   });
@@ -85,7 +85,7 @@ describe("GET /api/articles/:article_id", () => {
         topic: expect.any(String),
         created_at: expect.any(String),
         votes: expect.any(Number),
-        //comment_count: expect.any(Number),
+        //comment_count: expect.any(String),
       });
     });
     test('Vote count should increase by 25 to 125 for article_id 1', async () => {
@@ -132,6 +132,32 @@ describe("GET /api/articles/:article_id", () => {
   expect(body.msg).toBe("Bad Request");
 });
   });
+
+
+  describe("GET /api/articles", () => {
+    test("200: Responds with an array of articles, with comment count added", async () => {
+      const { body } = await request(app)
+        .get(`/api/articles`)
+        .expect(200);
+      expect(body.allArticles.length).toBe(12);
+      body.allArticles.forEach((article) => {
+        expect(article).toMatchObject({
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: expect.any(Number),
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          comment_count: expect.any(String),
+        });
+      });
+    });
+
+  });
+
+
+
 
 
 // test("200: Sorts all treasures by age by default", () => {

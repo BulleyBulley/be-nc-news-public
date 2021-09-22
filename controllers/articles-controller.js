@@ -1,5 +1,4 @@
-const { path } = require('../app');
-const { fetchArticle, updateArticleById } = require('../models/articles.model')
+const { fetchArticle, updateArticleById, fetchAllArticles } = require('../models/articles.model')
 
 exports.getArticleById = async (req, res, next) => {
     try {
@@ -24,6 +23,16 @@ exports.getArticleById = async (req, res, next) => {
         })
         //rewrite using await
       };
+
+
+exports.getAllArticles = async (req, res, next) => {
+    try {
+        const allArticles = await fetchAllArticles();
+        res.status(200).send({allArticles})
+    }  catch (err) {
+        next (err)
+    }
+}
 
 
 

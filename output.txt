@@ -1,0 +1,6 @@
+You are now connected to database "nc_news_test" as user "philbulleyment".
+ article_id |                         title                          |                          body                          | votes | topic |  author  |     created_at      | comment_count 
+------------+--------------------------------------------------------+--------------------------------------------------------+-------+-------+----------+---------------------+---------------
+         10 | Seven inspirational thought leaders from Manchester UK | Who are we kidding, there is only one, and it's Mitch! |     0 | mitch | rogersop | 5/14/2020, 06:15:00 |             0
+(1 row)
+
