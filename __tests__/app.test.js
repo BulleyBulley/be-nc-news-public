@@ -172,7 +172,7 @@ describe("GET /api/articles/:article_id", () => {
       .expect(200)
       expect(body.allArticles).toBeSorted({key : 'author', descending: false })
     })
-    test.only('200: Shows only topics by query passed' , async () => {
+    test('200: Shows only topics by query passed' , async () => {
       const { body } = await request(app)
       .get(`/api/articles?topic=cats`)
       .expect(200)

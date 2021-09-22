@@ -12,7 +12,7 @@ exports.fetchArticle = async (article_id) => {
       if(result.rows.length === 0) {
           return Promise.reject({ status: 404, msg: "Article Not Found"})
       }
-    console.log(result.rows)
+    //console.log(result.rows)
     return result.rows;
   };
 
@@ -39,7 +39,7 @@ exports.fetchArticle = async (article_id) => {
     FROM articles
     LEFT JOIN comments ON articles.article_id = comments.article_id
     GROUP BY articles.article_id`;
-    console.log(topic)
+    
     if (topic) {
       queryValues.push(topic)
         queryStr += ` HAVING articles.topic = $1`
@@ -47,7 +47,7 @@ exports.fetchArticle = async (article_id) => {
 
     queryStr += ` ORDER BY ${sort_by} ${order};`
         const result = await db.query(queryStr,queryValues)
-    console.log(result.rows)
+    //console.log(result.rows)
     return result.rows
   
     
