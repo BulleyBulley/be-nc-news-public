@@ -2,6 +2,7 @@ const db = require("../db/connection.js");
 const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
+require('jest-sorted')
 const app = require("../app");
 
 beforeEach(() => seed(testData));
@@ -134,7 +135,7 @@ describe("GET /api/articles/:article_id", () => {
   });
 
 
-  describe("GET /api/articles", () => {
+  describe.only("GET /api/articles", () => {
     test("200: Responds with an array of articles, with comment count added", async () => {
       const { body } = await request(app)
         .get(`/api/articles`)
@@ -152,7 +153,19 @@ describe("GET /api/articles/:article_id", () => {
           comment_count: expect.any(String),
         });
       });
-    });
+    })
+    test('200: Sorts all articles by date by default' , async () => {
+      const { body } = await request(app)
+      .get(`/api/articles`)
+      .expect(200)
+      expect(body.allArticles).toBeSorted("date")
+    })
+    test('200: Sorts all articles by query passed' , async () => {
+      const { body } = await request(app)
+      .get(`/api/articles?sort_by=title`)
+      .expect(200)
+      expect(body.allArticles).toBeSorted("title")
+    })
 
   });
 

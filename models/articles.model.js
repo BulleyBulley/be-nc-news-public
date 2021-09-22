@@ -33,13 +33,20 @@ exports.fetchArticle = async (article_id) => {
       });
   }; 
 
-  exports.fetchAllArticles = async () => {
-    const result = await db.query(
-      `SELECT articles.*, COUNT(comment_id) AS comment_count
-      FROM articles
-      LEFT JOIN comments ON articles.article_id = comments.article_id
-      GROUP BY articles.article_id;`
-    );
+  exports.fetchAllArticles = async (sort_by = "created_at", order = "DESC", topic) => {
+    let queryStr = `SELECT articles.*, COUNT(comment_id) AS comment_count
+    FROM articles
+    LEFT JOIN comments ON articles.article_id = comments.article_id
+    GROUP BY articles.article_id`;
+
+    queryStr += ` ORDER BY articles.${sort_by} ${order};`
+    const result = await db.query(queryStr)
+    console.log(result.rows)
+    return result.rows
+    
+    
+      
+    
 
     return result.rows
   }
