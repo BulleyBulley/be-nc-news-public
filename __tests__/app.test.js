@@ -130,7 +130,9 @@ describe("PATCH /api/articles/:article_id", () => {
 
 describe("GET /api/articles", () => {
   test("200: Responds with an array of articles, with comment count added", async () => {
-    const { body } = await request(app).get(`/api/articles`).expect(200);
+    const { body } = await request(app)
+    .get(`/api/articles`)
+    .expect(200);
     expect(body.allArticles.length).toBe(12);
     body.allArticles.forEach((article) => {
       expect(article).toMatchObject({
@@ -192,7 +194,7 @@ describe("GET /api/articles", () => {
   });
 });
 
-describe.only('GET /api/articles/:article_id/comments', () => {
+describe('GET /api/articles/:article_id/comments', () => {
   test("200: Responds with an array of comments for given article", async () => {
     const article_id = 1
     const { body } = await request(app)
@@ -206,5 +208,39 @@ describe.only('GET /api/articles/:article_id/comments', () => {
       created_at: expect.any(String),
     });
   })
+  });
+  test("404: Not Found for empty article", async () => {
+    const article_id = 999999
+    const { body } = await request(app)
+    .get(`/api/articles/${article_id}/comments`)
+    .expect(404);
+    expect(body.msg).toBe("Not Found");
+  })
+  test("400: Bad request for invalid article_id", async () => {
+    const article_id = 'splatoon'
+    const { body } = await request(app)
+    .get(`/api/articles/${article_id}/comments`)
+    .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  })
+});
+
+describe.only('POST /api/articles/:article_id/comments', () => {
+  test('201: Request body accepts object, responds with posted comment', async () => {
+    const article_id = 1
+    const input = {
+      body: "Right here, is a new comment...........",
+      username: 'dinkerbell',
+    }
+    const { body } = await request(app)
+    .post(`/api/articles/${article_id}/comments`)
+    .expect(201);
+      expect(body.postedComment).toMatchObject({
+      comment_id: expect.any(Number),
+      votes: expect.any(Number),
+      body: expect.any(String),
+      created_at: expect.any(String),
+    });
+
   });
 });
