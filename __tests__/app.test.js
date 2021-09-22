@@ -135,7 +135,7 @@ describe("GET /api/articles/:article_id", () => {
   });
 
 
-  describe.only("GET /api/articles", () => {
+  describe("GET /api/articles", () => {
     test("200: Responds with an array of articles, with comment count added", async () => {
       const { body } = await request(app)
         .get(`/api/articles`)
@@ -172,12 +172,12 @@ describe("GET /api/articles/:article_id", () => {
       .expect(200)
       expect(body.allArticles).toBeSorted({key : 'author', descending: false })
     })
-    test('200: Shows only topics by query passed' , async () => {
+    test.only('200: Shows only topics by query passed' , async () => {
       const { body } = await request(app)
-      .get(`/api/articles?topic=football`)
+      .get(`/api/articles?topic=cats`)
       .expect(200)
       body.allArticles.forEach((article) => {
-        expect(article.topic).toEqual('football');
+        expect(article.topic).toEqual('cats');
     })
 
   });

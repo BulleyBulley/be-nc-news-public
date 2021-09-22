@@ -34,18 +34,20 @@ exports.fetchArticle = async (article_id) => {
   }; 
 
   exports.fetchAllArticles = async (sort_by = "created_at", order = "DESC", topic) => {
+    const queryValues = [];
     let queryStr = `SELECT articles.*, COUNT(comment_id) AS comment_count
     FROM articles
     LEFT JOIN comments ON articles.article_id = comments.article_id
     GROUP BY articles.article_id`;
-    
+    console.log(topic)
     if (topic) {
-        queryStr += ` HAVING articles.topic = '$1'`,[topic]
+      queryValues.push(topic)
+        queryStr += ` HAVING articles.topic = $1`
     }
 
     queryStr += ` ORDER BY ${sort_by} ${order};`
-        const result = await db.query(queryStr)
-    
+        const result = await db.query(queryStr,queryValues)
+    console.log(result.rows)
     return result.rows
   
     
