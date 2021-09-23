@@ -12,7 +12,7 @@ describe("GET /api", () => {
   test("200: JSON object with list of endpoints", async () => {
     const { body } = await request(app).get("/api")
     .expect(200);
-    //expect(body).toHaveProperty(Object);
+    expect(Object.keys(body).length > 1)
   });
   test("404: Invalid URL returns 404 error and message", async () => {
     const res = await request(app).get("/api/thropics").expect(404);
@@ -245,28 +245,38 @@ describe('POST /api/articles/:article_id/comments', () => {
       created_at: expect.any(String),
     });
   });
-  test('404: Not Found for not existent id', async () => {
-    const article_id = 999999
-    const newComment = {
-      username: 'butter_bridge',
-      body: "Right here, is a new comment..........."
-    }
+  // test('404: Not Found for not existent id', async () => {
+  //   const article_id = 999999
+  //   const newComment = {
+  //     username: 'butter_bridge',
+  //     body: "Right here, is a new comment..........."
+  //   }
+  //   const { body } = await request(app)
+  //   .post(`/api/articles/${article_id}/comments`)
+  //   .send(newComment)
+  //   .expect(404);
+  //   expect(body.msg).toBe("Not Found");
+  // });
+  // test('400: Bad Request for invalid id', async () => {
+  //   const article_id = '%$£%@'
+  //   const newComment = {
+  //     username: 'butter_bridge',
+  //     body: "Right here, is a new comment..........."
+  //   }
+  //   const { body } = await request(app)
+  //   .post(`/api/articles/${article_id}/comments`)
+  //   .send(newComment)
+  //   .expect(400);
+  //   expect(body.msg).toBe("Bad Request");
+  // });
+});
+
+describe('DELETE /api/comments/:comment_id', () => {
+  test('204: Deletes given comment by comment_id', async () => {
+    const comment_id = 1
     const { body } = await request(app)
-    .post(`/api/articles/${article_id}/comments`)
-    .send(newComment)
-    .expect(404);
-    expect(body.msg).toBe("Not Found");
-  });
-  test('400: Bad Request for invalid id', async () => {
-    const article_id = '%$£%@'
-    const newComment = {
-      username: 'butter_bridge',
-      body: "Right here, is a new comment..........."
-    }
-    const { body } = await request(app)
-    .post(`/api/articles/${article_id}/comments`)
-    .send(newComment)
-    .expect(400);
-    expect(body.msg).toBe("Bad Request");
+    .delete(`/api/comments/${comment_id}`)
+    .expect(204);
+    
   });
 });
