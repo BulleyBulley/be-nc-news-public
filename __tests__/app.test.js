@@ -246,29 +246,27 @@ describe('POST /api/articles/:article_id/comments', () => {
     });
   });
   // test('404: Not Found for not existent id', async () => {
-  //   const article_id = 999999
   //   const newComment = {
   //     username: 'butter_bridge',
   //     body: "Right here, is a new comment..........."
   //   }
   //   const { body } = await request(app)
-  //   .post(`/api/articles/${article_id}/comments`)
+  //   .post(`/api/articles/999999/comments`)
   //   .send(newComment)
   //   .expect(404);
   //   expect(body.msg).toBe("Not Found");
   // });
-  // test('400: Bad Request for invalid id', async () => {
-  //   const article_id = '%$£%@'
-  //   const newComment = {
-  //     username: 'butter_bridge',
-  //     body: "Right here, is a new comment..........."
-  //   }
-  //   const { body } = await request(app)
-  //   .post(`/api/articles/${article_id}/comments`)
-  //   .send(newComment)
-  //   .expect(400);
-  //   expect(body.msg).toBe("Bad Request");
-  // });
+  test('400: Bad Request for invalid id', async () => {
+    const newComment = {
+      username: 'butter_bridge',
+      body: "Right here, is a new comment..........."
+    }
+    const { body } = await request(app)
+    .post(`/api/articles/*&hg/comments`)
+    .send(newComment)
+    .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
 });
 
 describe('DELETE /api/comments/:comment_id', () => {
