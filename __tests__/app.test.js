@@ -279,4 +279,17 @@ describe('DELETE /api/comments/:comment_id', () => {
     .expect(204);
     
   });
+  test('400: Bad Request for invalid id', async () => {
+      const { body } = await request(app)
+    .delete(`/api/comments/$hg`)
+    .expect(400);
+    expect(body.msg).toBe("Bad Request");
 });
+test('404: Not Found for non existent comment_id', async () => {
+  const comment_id = 9999999
+  const { body } = await request(app)
+.delete(`/api/comments/${comment_id}`)
+.expect(404);
+expect(body.msg).toBe("Not Found");
+});
+})
