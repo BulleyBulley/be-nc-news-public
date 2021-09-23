@@ -9,9 +9,10 @@ beforeEach(() => seed(testData));
 afterAll(() => db.end());
 
 describe("GET /api", () => {
-  test("200: JSON object with msg key", async () => {
-    const { body } = await request(app).get("/api").expect(200);
-    expect(body).toHaveProperty("msg", "Connection Success");
+  test("200: JSON object with list of endpoints", async () => {
+    const { body } = await request(app).get("/api")
+    .expect(200);
+    //expect(body).toHaveProperty(Object);
   });
   test("404: Invalid URL returns 404 error and message", async () => {
     const res = await request(app).get("/api/thropics").expect(404);

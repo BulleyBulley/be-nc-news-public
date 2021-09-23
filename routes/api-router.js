@@ -3,12 +3,12 @@ const apiRouter = express.Router();
 const { getTopics } = require('../controllers/topics-controller.js')
 const { getArticleById, patchArticleById, getAllArticles } = require('../controllers/articles-controller.js')
 const { getCommentsByArticleId, postCommentByArticleId } = require('../controllers/comments-controller.js')
+const { getEndpoints } = require('../controllers/endpoints-controller.js')
 
-
-apiRouter.get('/', (req, res, next) => {
+apiRouter.get('/', getEndpoints)
     
-    res.status(200).send({ msg: 'Connection Success'})
-})
+    //res.status(200).send({ msg: 'Connection Success'})
+
 
 apiRouter.get('/topics', getTopics)
 apiRouter.get('/articles', getAllArticles)
