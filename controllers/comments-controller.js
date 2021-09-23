@@ -18,7 +18,7 @@ exports.postCommentByArticleId = async (req, res, next) => {
         //console.log(req.body)
         const newCommentInfo = req.body;
         const postedComment = await insertCommentByArticleId (article_id, newCommentInfo)
-        console.log(postedComment) 
+        //console.log(postedComment) 
         res.status(201).send({postedComment})
     } catch (err) {
         next (err)

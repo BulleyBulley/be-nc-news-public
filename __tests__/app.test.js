@@ -72,7 +72,7 @@ describe("PATCH /api/articles/:article_id", () => {
       .patch(`/api/articles/${article_id}`)
       .send(articleUpdate)
       .expect(200);
-    expect(body.article).toMatchObject({
+    expect(body.article).toMatchObject([{
       author: expect.any(String),
       title: expect.any(String),
       article_id: expect.any(Number),
@@ -81,7 +81,7 @@ describe("PATCH /api/articles/:article_id", () => {
       created_at: expect.any(String),
       votes: expect.any(Number),
       //comment_count: expect.any(String),
-    });
+    }]);
   });
   test("Vote count should increase by 25 to 125 for article_id 1", async () => {
     const article_id = 1;
@@ -89,7 +89,7 @@ describe("PATCH /api/articles/:article_id", () => {
     const { body } = await request(app)
       .patch(`/api/articles/${article_id}`)
       .send(articleUpdate);
-    expect(body.article.votes).toEqual(125);
+    expect(body.article[0].votes).toEqual(125);
   });
   test("404: valid but non-existent article_id", async () => {
     const article_id = 9999;
@@ -225,7 +225,7 @@ describe('GET /api/articles/:article_id/comments', () => {
   })
 });
 
-describe.only('POST /api/articles/:article_id/comments', () => {
+describe('POST /api/articles/:article_id/comments', () => {
   test('201: Request body accepts object, responds with posted comment', async () => {
     const article_id = 1
     const newComment = {
@@ -243,6 +243,29 @@ describe.only('POST /api/articles/:article_id/comments', () => {
       body: expect.any(String),
       created_at: expect.any(String),
     });
-
+  });
+  test('404: Not Found for not existent id', async () => {
+    const article_id = 999999
+    const newComment = {
+      username: 'butter_bridge',
+      body: "Right here, is a new comment..........."
+    }
+    const { body } = await request(app)
+    .post(`/api/articles/${article_id}/comments`)
+    .send(newComment)
+    .expect(404);
+    expect(body.msg).toBe("Not Found");
+  });
+  test('400: Bad Request for invalid id', async () => {
+    const article_id = '%$£%@'
+    const newComment = {
+      username: 'butter_bridge',
+      body: "Right here, is a new comment..........."
+    }
+    const { body } = await request(app)
+    .post(`/api/articles/${article_id}/comments`)
+    .send(newComment)
+    .expect(400);
+    expect(body.msg).toBe("Bad Request");
   });
 });

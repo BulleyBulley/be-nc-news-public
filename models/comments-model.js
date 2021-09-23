@@ -15,16 +15,21 @@ exports.fetchCommentsByArticleId = async (article_id) => {
 }
 
 exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
+
+    // const checkArticleExists = async (article_id) => {
+    // const exists = await db.query("SELECT * FROM articles where article_id = $1",[article_id])
+    // if (exists.rows.length === 0) {
+        
+    //     return Promise.reject({status: 404, msg: "Not Found"})
+    // }
+    // }
     const { username, body } = newCommentInfo;
     const date = new Date()
-
-    //console.log(body)
-
     let result = await db.query(
         `INSERT INTO comments (author, article_id, body, created_at) VALUES ($1, $2, $3, $4)
         RETURNING *;`, [username, article_id, body, date]
     )   
-    //console.log(result.rows)
+    console.log(result)
         return result.rows[0]
 
 }

@@ -29,7 +29,7 @@ exports.fetchArticle = async (article_id) => {
         if (result.rows[0].votes === null ) {
           return Promise.reject({status:400, msg: "Bad Request"})
         }
-        return result.rows[0];
+        return result.rows;
       });
   }; 
 
