@@ -14,23 +14,17 @@ exports.fetchCommentsByArticleId = async (article_id) => {
         return result.rows
 }
 
-exports.insertCommentsByArticleId = async (article_id, newCommentInfo) => {
-    const { park_name, year_opened, annual_attendance } = newPark;
+exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
+    const { username, body } = newCommentInfo;
+    const date = new Date()
 
-    const result = await db.query(
-       
-    )
+    //console.log(body)
 
-
-    
-
-    return db
-      .query(
-        "INSERT INTO parks (park_name, year_opened, annual_attendance) VALUES ($1, $2, $3) RETURNING *;",
-        [park_name, year_opened, annual_attendance]
-      )
-      .then((result) => {
-        return result.rows[0];
-      });
+    let result = await db.query(
+        `INSERT INTO comments (author, article_id, body, created_at) VALUES ($1, $2, $3, $4)
+        RETURNING *;`, [username, article_id, body, date]
+    )   
+    //console.log(result.rows)
+        return result.rows[0]
 
 }

@@ -228,15 +228,17 @@ describe('GET /api/articles/:article_id/comments', () => {
 describe.only('POST /api/articles/:article_id/comments', () => {
   test('201: Request body accepts object, responds with posted comment', async () => {
     const article_id = 1
-    const input = {
-      body: "Right here, is a new comment...........",
-      username: 'dinkerbell',
+    const newComment = {
+      username: 'butter_bridge',
+      body: "Right here, is a new comment..........."
     }
     const { body } = await request(app)
     .post(`/api/articles/${article_id}/comments`)
+    .send(newComment)
     .expect(201);
       expect(body.postedComment).toMatchObject({
       comment_id: expect.any(Number),
+      article_id: expect.any(Number),
       votes: expect.any(Number),
       body: expect.any(String),
       created_at: expect.any(String),
