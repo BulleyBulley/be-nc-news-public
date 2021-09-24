@@ -55,5 +55,4 @@ exports.patchCommentById = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-  //rewrite using await
 };
