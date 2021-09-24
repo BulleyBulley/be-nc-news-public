@@ -46,3 +46,20 @@ if (result.rows.length !== 0) {
 return Promise.reject({status:404, msg: 'Not Found'})
   
 }
+
+exports.updateCommentById = (comment_id, patchInfo) => {
+  return db
+    .query(
+      `UPDATE comments SET votes = $1 + votes WHERE comment_id = $2 RETURNING *;`,
+      [patchInfo, comment_id]
+    )
+    .then((result) => {
+      if (result.rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "Comment Not Found" });
+      }
+      if (result.rows[0].votes === null) {
+        return Promise.reject({ status: 400, msg: "Bad Request" });
+      }
+      return result.rows;
+    });
+};

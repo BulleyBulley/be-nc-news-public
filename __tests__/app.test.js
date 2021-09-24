@@ -81,7 +81,6 @@ describe("PATCH /api/articles/:article_id", () => {
       topic: expect.any(String),
       created_at: expect.any(String),
       votes: expect.any(Number),
-      //comment_count: expect.any(String),
     }]);
   });
   test("Vote count should increase by 25 to 125 for article_id 1", async () => {
@@ -321,4 +320,68 @@ describe('GET api/users/:username', () => {
       .get("/api/users/notauser123").expect(404);
       expect(body.msg).toBe("User Not Found");
     });
+  });
+
+  describe('PATCH /api/comments/:comment_id', () => {
+    test('200: Accepts update object and responds with updated comment', async () => {
+        const comment_id = 1;
+        const commentUpdate = { inc_votes : 15 };
+        const { body } = await request(app)
+         .patch(`/api/comments/${comment_id}`)
+         .send(commentUpdate)
+         .expect(200);
+         expect(body.comment).toMatchObject([{
+          body: expect.any(String),
+          votes: expect.any(Number),
+          author: expect.any(String),
+          article_id: expect.any(Number),
+          created_at: expect.any(String),
+        }])
+    })
+    test('Vote count increases by 20 for comment_id 5', async () => {
+      const comment_id = 5;
+      const commentUpdate = { inc_votes: 20 };
+      const { body } = await request(app)
+        .patch(`/api/comments/${comment_id}`)
+        .send(commentUpdate);
+      expect(body.comment[0].votes).toEqual(20);
+    });
+  
+
+    test("404: valid but non-existent comment_id", async () => {
+      const comment_id = 9999;
+      const commentUpdate = { inc_votes: 25 };
+      const { body } = await request(app)
+        .patch(`/api/comments/${comment_id}`)
+        .send(commentUpdate)
+        .expect(404);
+      expect(body.msg).toBe("Comment Not Found");
+    });
+    test("400: bad comment_id", async () => {
+      const commentUpdate = { inc_votes: 25 };
+      const { body } = await request(app)
+        .patch("/api/comments/whatasillycommentyouare")
+        .send(commentUpdate)
+        .expect(400);
+      expect(body.msg).toBe("Bad Request");
+    });
+    test("400: no inc_votes on request body", async () => {
+      const comment_id = 1;
+      const commentUpdate = { inc_nothing: 5 };
+      const { body } = await request(app)
+        .patch(`/api/comments/${comment_id}`)
+        .send(commentUpdate)
+        .expect(400);
+      expect(body.msg).toBe("Bad Request");
+    });
+    test("400: Other property on request body", async () => {
+      const comment_id = 1;
+      const commentUpdate = { inc_votes: 5, favourite_cracker: "prawn" };
+      const { body } = await request(app)
+        .patch(`/api/comments/${comment_id}`)
+        .send(commentUpdate)
+        .expect(400);
+      expect(body.msg).toBe("Bad Request");
+    });
+    
   });
