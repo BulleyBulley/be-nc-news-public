@@ -92,5 +92,10 @@
         "created_at": "11/7/2020, 06:03:00"
       }
     }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Deletes given comment by comment_id",
+    "queries": [],
+    "exampleResponse": "No Content"
   }
 }
