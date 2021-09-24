@@ -291,3 +291,16 @@ test('404: Not Found for non existent comment_id', async () => {
 expect(body.msg).toBe("Not Found");
 });
 })
+
+describe('GET /api/users', () => {
+  test('200: Responds with an array of objects of usernames', async () => {
+    const { body } = await request(app)
+    .get('/api/users')
+    .expect(200);
+    body.allUsers.forEach((user) => {
+      expect(user).toMatchObject({
+        username: expect.any(String),
+      });
+    }); 
+  });
+});

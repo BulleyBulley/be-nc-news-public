@@ -1,4 +1,4 @@
-const { showAllTopics } = require('../models/topics.model')
+const { showAllTopics } = require('../models/topics-model')
 
 exports.getTopics = (req, res, next) => {
     //console.log(req.query)
