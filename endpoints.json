@@ -45,7 +45,7 @@
   "PATCH /api/articles/:article_id": {
     "description": "Accepts an object and responds with updated article",
     "queries": [],
-    "request body": { "inc_votes" : 1 },
+    "request body": { "inc_votes": 1 },
     "exampleResponse": {
       "article": {
         "article_id": 1,
@@ -122,5 +122,5 @@
         }
       ]
     }
-  },
+  }
 }
