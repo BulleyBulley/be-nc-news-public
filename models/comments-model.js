@@ -10,7 +10,6 @@ exports.fetchCommentsByArticleId = async (article_id) => {
   if (result.rows.length === 0) {
     return Promise.reject({ status: 404, msg: "Not Found" });
   }
-  //console.log(result)
   return result.rows;
 };
 
@@ -33,7 +32,7 @@ exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
     [username, article_id, body, date]
   );
 
-  return result.rows[0];
+  return result.rows;
 };
 
 exports.removeCommentByCommentId = async (comment_id) => {

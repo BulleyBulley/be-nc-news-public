@@ -59,7 +59,8 @@ const seed = (data) => {
       votes INT DEFAULT 0,
       created_at VARCHAR(50),
       body TEXT
-    );`);S
+    );`);
+      S;
     })
     .then(() => {
       //console.log("All tables created");
@@ -122,8 +123,6 @@ const seed = (data) => {
       //console.log(result.rows)
       //console.log("All tables seeded");
     });
-
-  //add comments tests
 };
 
 module.exports = seed;

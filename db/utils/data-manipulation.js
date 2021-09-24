@@ -1,26 +1,13 @@
-// extract any functions you are using to manipulate your data, into this file
-
-// function dateFilter (dateInput) {
-
-// }
-
 exports.formatTopicsData = (topicData) => {
   const formattedTopicsData = topicData.map((topic) => {
-    return [
-        topic.slug, 
-        topic.description
-    ];
+    return [topic.slug, topic.description];
   });
   return formattedTopicsData;
 };
 
 exports.formatUsersData = (userData) => {
   const formattedUsersData = userData.map((user) => {
-    return [
-        user.username, 
-        user.avatar_url, 
-        user.name
-    ];
+    return [user.username, user.avatar_url, user.name];
   });
   return formattedUsersData;
 };

@@ -237,13 +237,13 @@ describe('POST /api/articles/:article_id/comments', () => {
     .post(`/api/articles/${article_id}/comments`)
     .send(newComment)
     .expect(201);
-      expect(body.postedComment).toMatchObject({
+      expect(body.postedComment).toMatchObject([{
       comment_id: expect.any(Number),
       article_id: expect.any(Number),
       votes: expect.any(Number),
       body: expect.any(String),
       created_at: expect.any(String),
-    });
+    }]);
   });
   // test('404: Not Found for not existent id', async () => {
   //   const newComment = {

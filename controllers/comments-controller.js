@@ -24,7 +24,6 @@ exports.postCommentByArticleId = async (req, res, next) => {
       article_id,
       newCommentInfo
     );
-    //console.log(postedComment)
     res.status(201).send({ postedComment });
   } catch (err) {
     next(err);
