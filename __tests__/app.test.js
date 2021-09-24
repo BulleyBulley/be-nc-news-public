@@ -128,12 +128,11 @@ describe("PATCH /api/articles/:article_id", () => {
   });
 });
 
-describe("GET /api/articles", () => {
+describe.only("GET /api/articles", () => {
   test("200: Responds with an array of articles, with comment count added", async () => {
     const { body } = await request(app)
     .get(`/api/articles`)
     .expect(200);
-    expect(body.allArticles.length).toBe(12);
     body.allArticles.forEach((article) => {
       expect(article).toMatchObject({
         author: expect.any(String),
@@ -198,6 +197,20 @@ describe("GET /api/articles", () => {
     .expect(404);
   expect(body.msg).toBe("Not Found");
   });
+  test('200: Responds with the first 10 articles by default ', async () => {
+    const { body } = await request(app)
+    .get(`/api/articles`)
+    .expect(200);
+    expect(body.allArticles).toHaveLength(10)
+  });
+  test.only('200: responds to changes to page query', async () => {
+    const { body } = await request(app)
+    .get(`/api/articles?p=2`)
+    .expect(200);
+    expect(body.allArticles).toHaveLength(2)
+  })
+
+
 });
 
 describe('GET /api/articles/:article_id/comments', () => {

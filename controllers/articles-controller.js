@@ -31,9 +31,9 @@ exports.patchArticleById = (req, res, next) => {
 
 exports.getAllArticles = async (req, res, next) => {
   try {
-    const { sort_by, order, topic } = req.query;
-
-    const allArticles = await fetchAllArticles(sort_by, order, topic);
+    const { sort_by, order, topic, limit, p } = req.query;
+    //console.log(req.query)
+    const allArticles = await fetchAllArticles(sort_by, order, topic, limit, p);
     if (allArticles.length === 0) res.status(404).send({ msg: "Not Found" });
     res.status(200).send({ allArticles });
   } catch (err) {
