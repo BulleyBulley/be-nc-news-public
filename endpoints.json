@@ -97,5 +97,30 @@
     "description": "Deletes given comment by comment_id",
     "queries": [],
     "exampleResponse": "No Content"
-  }
+  },
+  "GET /api/users": {
+    "description": "serves an array of all usernames",
+    "exampleResponse": {
+      "allUsers": [
+        {
+          "username": "tickle122"
+        },
+        {
+          "username": "grumpy19"
+        },
+        {
+          "username": "happyamy2016"
+        },
+        {
+          "username": "cooljmessy"
+        },
+        {
+          "username": "weegembump"
+        },
+        {
+          "username": "jessjelly"
+        }
+      ]
+    }
+  },
 }
