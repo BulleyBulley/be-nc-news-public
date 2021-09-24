@@ -10,8 +10,9 @@
     }
   },
   "GET /api/articles": {
-    "description": "serves an array of all articles",
+    "description": "Serves an array of all articles",
     "queries": ["sort_by", "order"],
+    "exampleQuery":["?sort_by=article_id&order=desc"],
     "exampleResponse": { "allArticles": [
       {
         "article_id": 36,
@@ -47,7 +48,7 @@
     }
   },
   "GET /api/articles/:article_id": {
-    "description": "serves an array of the specified article",
+    "description": "Serves an array of the specified article",
     "queries": [],
     "exampleResponse": {
       "article": [
