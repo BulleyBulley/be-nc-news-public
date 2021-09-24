@@ -52,4 +52,7 @@ exports.fetchAllArticles = async (sort_by = "created_at", order = "DESC", topic,
   const result = await db.query(queryStr, queryValues);
   //console.log(result.rows)
   return result.rows;
+
+
+  //add total count property?
 };
