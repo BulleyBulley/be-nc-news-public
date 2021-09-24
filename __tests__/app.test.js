@@ -320,4 +320,9 @@ describe.only('GET api/users/:username', () => {
         name: expect.any(String),
       }]);
     });
+    test("404: valid but non-existent username", async () => {
+      const { body } = await request(app)
+      .get("/api/users/notauser123").expect(404);
+      expect(body.msg).toBe("User Not Found");
+    });
   });
