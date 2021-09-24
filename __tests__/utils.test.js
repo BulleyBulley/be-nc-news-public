@@ -3,7 +3,6 @@ const {
   formatUsersData,
   formatArticlesData,
   formatCommentsData,
-  dateConverter,
 } = require("../db/utils/data-manipulation.js");
 
 describe("formatTopicsData", () => {
@@ -109,7 +108,7 @@ describe("formatArticlesData", () => {
         "mitch",
         "butter_bridge",
         "I find this existence challenging",
-        "7/9/2020, 22:11:00",
+        new Date(1594329060000),
         100,
       ],
     ];
@@ -163,7 +162,7 @@ describe("formatCommentsData", () => {
         16,
         "butter_bridge",
         9,
-        "4/6/2020, 14:17:00",
+        new Date(1586179020000),
       ],
     ];
     expect(formatCommentsData(commentData)).toEqual(expectedFormattedData);
@@ -191,13 +190,3 @@ describe("formatCommentsData", () => {
     expect(commentData).toEqual(unMutatedRows);
   });
 });
-
-// describe('dateConverter', () => {
-//     test('returns a date string with input of number of seconds', () => {
-//         const dateInput = new Date(1586179020000)
-//         const expectedOutput = "06-04-2020"
-//         expect(dateConverter(dateInput)).toEqual(
-//           expectedOutput
-//         );
-//       });
-// });

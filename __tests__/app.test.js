@@ -128,7 +128,7 @@ describe("PATCH /api/articles/:article_id", () => {
   });
 });
 
-describe.only("GET /api/articles", () => {
+describe("GET /api/articles", () => {
   test("200: Responds with an array of articles, with comment count added", async () => {
     const { body } = await request(app)
     .get(`/api/articles`)
@@ -203,7 +203,7 @@ describe.only("GET /api/articles", () => {
     .expect(200);
     expect(body.allArticles).toHaveLength(10)
   });
-  test.only('200: responds to changes to page query', async () => {
+  test('200: responds to changes to page query', async () => {
     const { body } = await request(app)
     .get(`/api/articles?p=2`)
     .expect(200);
