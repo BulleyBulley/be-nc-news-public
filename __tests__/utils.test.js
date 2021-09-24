@@ -6,7 +6,7 @@ const {
   dateConverter,
 } = require("../db/utils/data-manipulation.js");
 
-describe.skip("formatTopicsData", () => {
+describe("formatTopicsData", () => {
   test("returns an empty array for no data", () => {
     const topicData = [];
     const expectedFormattedData = [];
@@ -40,7 +40,7 @@ describe.skip("formatTopicsData", () => {
   });
 });
 
-describe.skip("formatUsersData", () => {
+describe("formatUsersData", () => {
   test("returns an empty array for no data", () => {
     const userData = [];
     const expectedFormattedData = [];
@@ -86,7 +86,7 @@ describe.skip("formatUsersData", () => {
   });
 });
 
-describe.skip("formatArticlesData", () => {
+describe("formatArticlesData", () => {
   test("returns an empty array for no data", () => {
     const articleData = [];
     const expectedFormattedData = [];
@@ -141,7 +141,7 @@ describe.skip("formatArticlesData", () => {
   });
 });
 
-describe.skip("formatCommentsData", () => {
+describe("formatCommentsData", () => {
   test("returns an empty array for no data", () => {
     const commentData = [];
     const expectedFormattedData = [];
