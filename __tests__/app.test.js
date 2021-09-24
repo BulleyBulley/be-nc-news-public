@@ -155,17 +155,23 @@ describe("GET /api/articles", () => {
       descending: true,
     });
   });
-  test("200: Sorts all articles by query passed", async () => {
+  test("200: Sorts all articles by title", async () => {
     const { body } = await request(app)
       .get(`/api/articles?sort_by=title`)
       .expect(200);
     expect(body.allArticles).toBeSorted({ key: "title", descending: true });
   });
-  test("200: Sorts all articles ascending by query passed", async () => {
+  test("200: Sorts all articles ascending by author", async () => {
     const { body } = await request(app)
       .get(`/api/articles?sort_by=author&order=asc`)
       .expect(200);
     expect(body.allArticles).toBeSorted({ key: "author", descending: false });
+  });
+  test("200: Sorts all articles ascending by article_id", async () => {
+    const { body } = await request(app)
+      .get(`/api/articles?sort_by=article_id&order=asc`)
+      .expect(200);
+    expect(body.allArticles).toBeSorted({ key: "article_id", descending: false });
   });
   test("200: Shows only topics by query passed", async () => {
     const { body } = await request(app)
@@ -309,7 +315,7 @@ describe('GET /api/users', () => {
   });
 });
 
-describe.only('GET api/users/:username', () => {
+describe('GET api/users/:username', () => {
   test('200: Responds with a specified user object', async () => {
     const { body } = await request(app)
     .get(`/api/users/rogersop`)
