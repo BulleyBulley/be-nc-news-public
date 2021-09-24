@@ -303,4 +303,21 @@ describe('GET /api/users', () => {
       });
     }); 
   });
+  test("404: Invalid URL returns 404 error and message", async () => {
+    const res = await request(app).get("/api/usrs").expect(404);
+    expect(res.body.msg).toBe("Invalid URL");
+  });
 });
+
+describe.only('GET api/users/:username', () => {
+  test('200: Responds with a specified user object', async () => {
+    const { body } = await request(app)
+    .get(`/api/users/rogersop`)
+    .expect(200);
+      expect(body.user).toMatchObject([{
+        username: expect.any(String),
+        avatar_url: expect.any(String),
+        name: expect.any(String),
+      }]);
+    });
+  });
