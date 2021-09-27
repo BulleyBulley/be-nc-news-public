@@ -11,8 +11,8 @@
   },
   "GET /api/articles": {
     "description": "Serves an array of all articles",
-    "queries": ["sort_by", "order"],
-    "exampleQuery":["?sort_by=article_id&order=desc"],
+    "queries": ["sort_by", "order", "limit", "p"],
+    "exampleQuery":["?sort_by=article_id&order=desc&limit=3&p=2"],
     "exampleResponse": { "allArticles": [
       {
         "article_id": 36,
