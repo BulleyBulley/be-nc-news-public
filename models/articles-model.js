@@ -46,13 +46,13 @@ exports.fetchAllArticles = async (sort_by = "created_at", order = "DESC", topic,
     queryValues.push(topic);
     queryStr += ` HAVING articles.topic = $1`;
   }
-
+  
   queryStr += ` ORDER BY ${sort_by} ${order} LIMIT ${limit} OFFSET ${offset};`;
 
   const result = await db.query(queryStr, queryValues);
-  //console.log(result.rows)
+  
   return result.rows;
 
 
-  //add total count property?
+  //add total count property
 };

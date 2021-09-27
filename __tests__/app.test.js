@@ -203,6 +203,12 @@ describe("GET /api/articles", () => {
     .expect(200);
     expect(body.allArticles).toHaveLength(10)
   });
+  test('200: Responds with the first 3 articles set by limit ', async () => {
+    const { body } = await request(app)
+    .get(`/api/articles?limit=3`)
+    .expect(200);
+    expect(body.allArticles).toHaveLength(3)
+  });
   test('200: responds to changes to page query', async () => {
     const { body } = await request(app)
     .get(`/api/articles?p=2`)
