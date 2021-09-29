@@ -1,6 +1,6 @@
 const {
   fetchArticle,
-  updateArticleById,
+  updateArticleVotesById,
   fetchAllArticles,
   updateArticleBodyByArticleId
 } = require("../models/articles-model");
@@ -26,7 +26,7 @@ exports.patchArticleById = async (req, res, next) => {
     const updatedArticle = await updateArticleBodyByArticleId(article_id, patchInfo);
     res.status(200).send({ article: updatedArticle });
     } else {
-    const updatedArticle = await updateArticleById(article_id, patchInfo);
+    const updatedArticle = await updateArticleVotesById(article_id, patchInfo);
     res.status(200).send({ article: updatedArticle });
     }
   } catch (err) {

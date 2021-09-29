@@ -459,5 +459,41 @@ describe("PATCH /api/articles/:article_id", () => {
       },
     ]);
   });
+  test("404: valid but non-existent article_id", async () => {
+    const article_id = 9999;
+    const articleUpdate = { body : "patched body here....." };
+    const { body } = await request(app)
+      .patch(`/api/articles/${article_id}`)
+      .send(articleUpdate)
+      .expect(404);
+    expect(body.msg).toBe("Article Not Found");
+  });
+  test("400: bad article_id", async () => {
+    const articleUpdate = { body : "patched body here....." };;
+    const { body } = await request(app)
+      .patch("/api/articles/whatabadarticleyouare")
+      .send(articleUpdate)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("400: no body on request body", async () => {
+    const article_id = 1;
+    const articleUpdate = { baddy : "This is a patched body here....." };;
+    const { body } = await request(app)
+      .patch(`/api/articles/${article_id}`)
+      .send(articleUpdate)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("400: Other property on request body", async () => {
+    const article_id = 1;
+    const articleUpdate = { body : "This is a patched body here.....", loveOfParsnips: "none" };
+    const { body } = await request(app)
+      .patch(`/api/articles/${article_id}`)
+      .send(articleUpdate)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  
   
 });

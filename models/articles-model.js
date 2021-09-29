@@ -16,7 +16,7 @@ exports.fetchArticle = async (article_id) => {
     return result.rows[0];
 };
 
-exports.updateArticleById = (article_id, patchVotesInfo) => {
+exports.updateArticleVotesById = (article_id, patchVotesInfo) => {
   return db
     .query(
       `UPDATE articles SET votes = $1 + votes WHERE article_id = $2 RETURNING *;`,
