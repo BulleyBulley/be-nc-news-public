@@ -36,11 +36,11 @@ exports.fetchAllArticles = async (sort_by = "created_at", order = "DESC", topic,
   const offset = (p - 1) * limit;
   const queryValues = [];
   let queryStr = `
-    SELECT articles.*, COUNT(comment_id) 
-    AS comment_count
-    FROM articles
-    LEFT JOIN comments ON articles.article_id = comments.article_id
-    GROUP BY articles.article_id`;
+  SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comment_id) 
+  AS comment_count
+  FROM articles
+  LEFT JOIN comments ON articles.article_id = comments.article_id
+  GROUP BY articles.article_id`;
 
   if (topic) {
     queryValues.push(topic);
