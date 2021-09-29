@@ -39,11 +39,18 @@ exports.formatCommentsData = (commentData) => {
   return formattedCommentsData;
 };
 
-// exports.createSlugRef = (topicsRows) => {
-//     console.log(topicsRows)
-//     const slugRef = {};
-//     topicsRows.forEach((topic) => {
-//         slugRef[topic.slug] = topic.topic
-//     })
-//     return slugRef
-//}
+exports.checkSortByExists = async (sort_by) => {
+  if (sort_by === undefined) return 'created_at'
+  const validInput = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'comment_count']
+  if (validInput.includes(sort_by) === true){
+    return sort_by
+  } return Promise.reject({ status: 400, msg: "Bad Request" })
+}
+
+exports.checkOrderExists = async (order) => {
+  if (order === undefined) return "DESC"
+  const validInput = ['asc', 'desc']
+  if (validInput.includes(order) === true){
+    return order.toUpperCase()
+  } return Promise.reject({ status: 400, msg: "Bad Request" })
+}

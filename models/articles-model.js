@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { checkSortByExists,checkOrderExists } = require("../db/utils/data-manipulation");
 
 exports.fetchArticle = async (article_id) => {
   const result = await db.query(
@@ -32,22 +33,26 @@ exports.updateArticleById = (article_id, patchInfo) => {
     });
 };
 
-exports.fetchAllArticles = async (sort_by = "created_at", order = "DESC", topic, limit = 10, p = 1) => {
+exports.fetchAllArticles = async (sort_by, order, topic, limit = 10, p = 1) => {
   const offset = (p - 1) * limit;
-  const queryValues = [];
+  const queryValues = [limit, offset];
+  const checkedSortBy = await checkSortByExists(sort_by)
+  const checkedOrder = await checkOrderExists(order)
   let queryStr = `
   SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comment_id) 
   AS comment_count
   FROM articles
   LEFT JOIN comments ON articles.article_id = comments.article_id
   GROUP BY articles.article_id`;
+ 
 
   if (topic) {
     queryValues.push(topic);
-    queryStr += ` HAVING articles.topic = $1`;
+    queryStr += ` HAVING articles.topic = $3`;
   }
   
-  queryStr += ` ORDER BY ${sort_by} ${order} LIMIT ${limit} OFFSET ${offset};`;
+  queryStr += ` ORDER BY ${checkedSortBy} ${checkedOrder} LIMIT $1 OFFSET $2;`; 
+  //queryStr += ` ORDER BY ${sort_by} ${order} LIMIT ${limit} OFFSET ${offset};`;
 
   const result = await db.query(queryStr, queryValues);
   
