@@ -133,6 +133,7 @@ describe("GET /api/articles", () => {
     const { body } = await request(app)
     .get(`/api/articles`)
     .expect(200);
+    expect(body.allArticles.length).toBeGreaterThan(0);
     body.allArticles.forEach((article) => {
       expect(article).toMatchObject({
         author: expect.any(String),
@@ -225,6 +226,7 @@ describe('GET /api/articles/:article_id/comments', () => {
     const { body } = await request(app)
     .get(`/api/articles/${article_id}/comments`)
     .expect(200);
+    expect(body.commentsByArticleId.length).toBeGreaterThan(0);
     body.commentsByArticleId.forEach((comment) => {
     expect(comment).toMatchObject({
       comment_id: expect.any(Number),
@@ -311,6 +313,7 @@ describe('GET /api/users', () => {
     const { body } = await request(app)
     .get('/api/users')
     .expect(200);
+    expect(body.allUsers.length).toBeGreaterThan(0);
     body.allUsers.forEach((user) => {
       expect(user).toMatchObject({
         username: expect.any(String),
