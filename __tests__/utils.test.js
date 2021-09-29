@@ -194,27 +194,28 @@ describe("formatCommentsData", () => {
 });
 
 describe("checkSortByExists", () => {
-  test('empty input passes created_at by default', async () => {
-    await expect(checkSortByExists()).resolves.toBe('created_at');
+  test('empty input passes created_at by default',  () => {
+    expect(checkSortByExists()).toBe('created_at');
   });
-  
-  test('Valid input returns input', async () => {
-    await expect(checkSortByExists('author')).resolves.toBe('author');
+  test('Valid input returns input', 
+  () => {
+    expect(checkSortByExists('author')).toBe('author');
   });
-  test('Invalid input returns rejected', async () => {
-    await expect(checkSortByExists('awfurs')).rejects.toEqual({"msg": "Bad Request", "status": 400});
+  test('Invalid input returns rejected', 
+   () => {
+    expect(checkSortByExists('awfurs')).rejects.toEqual({"msg": "Bad Request", "status": 400});
   });
 })
 
 describe('checkOrderExists', () => {
-  test('empty input passed DESC by default', async () => {
-    await expect(checkOrderExists()).resolves.toBe('DESC');
+  test('empty input passed DESC by default', () => {
+    expect(checkOrderExists()).toBe('DESC');
   })
   test('valid input is passed through', async () => {
-    await expect(checkOrderExists('asc')).resolves.toBe('ASC');
+     expect(checkOrderExists('asc')).toBe('ASC');
   })
   test('Invalid input returns rejected', async () => {
-      await expect(checkOrderExists('UPPITY')).rejects.toEqual({"msg": "Bad Request", "status": 400});
+      expect(checkOrderExists('UPPITY')).rejects.toEqual({"msg": "Bad Request", "status": 400});
   
   })
 });

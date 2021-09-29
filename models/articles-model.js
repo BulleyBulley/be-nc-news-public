@@ -45,7 +45,6 @@ exports.fetchAllArticles = async (sort_by, order, topic, limit = 10, p = 1) => {
   LEFT JOIN comments ON articles.article_id = comments.article_id
   GROUP BY articles.article_id`;
  
-
   if (topic) {
     queryValues.push(topic);
     queryStr += ` HAVING articles.topic = $3`;
@@ -57,7 +56,5 @@ exports.fetchAllArticles = async (sort_by, order, topic, limit = 10, p = 1) => {
   const result = await db.query(queryStr, queryValues);
   
   return result.rows;
-
-
   //add total count property
 };
