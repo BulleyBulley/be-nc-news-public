@@ -242,6 +242,14 @@ describe("GET /api/articles/:article_id/comments", () => {
       .expect(400);
     expect(body.msg).toBe("Bad Request");
   });
+  test("200: valid ID, but has no comments responds with empty array", async () => {
+    const article_id = 2;
+    const { body } = await request(app)
+      .get(`/api/articles/${article_id}/comments`)
+      .expect(200);
+      
+    expect(body.commentsByArticleId).toEqual([]);
+  });
 });
 
 describe("POST /api/articles/:article_id/comments", () => {

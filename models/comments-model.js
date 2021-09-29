@@ -7,14 +7,6 @@ exports.fetchCommentsByArticleId = async (article_id) => {
         `,
     [article_id]
   );
-  if (result.rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "Not Found" });
-  }
-  return result.rows;
-};
-
-exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
-  const checkArticleExists = async (article_id) => {
     const exists = await db.query(
       "SELECT * FROM articles where article_id = $1",
       [article_id]
@@ -22,10 +14,24 @@ exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
     if (exists.rows.length === 0) {
       return Promise.reject({ status: 404, msg: "Not Found" });
     }
-  };
+  
+  
+  return result.rows;
+};
+
+exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
+  
+    const exists = await db.query(
+      "SELECT * FROM articles where article_id = $1",
+      [article_id]
+    );
+    if (exists.rows.length === 0) {
+      return Promise.reject({ status: 404, msg: "Not Found" });
+    }
+  
 
   const { username, body } = newCommentInfo;
-  //const date = new Date();
+  
   let result = await db.query(
     `INSERT INTO comments (author, article_id, body) VALUES ($1, $2, $3)
         RETURNING *;`,
