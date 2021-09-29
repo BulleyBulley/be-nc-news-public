@@ -273,7 +273,6 @@ describe("POST /api/articles/:article_id/comments", () => {
       },
     ]);
   });
-
   test("400: Bad Request for invalid id", async () => {
     const newComment = {
       username: "butter_bridge",
@@ -284,6 +283,38 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(400);
     expect(body.msg).toBe("Bad Request");
+  });
+  test("404: non existent ID", async () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "Right here, is a new comment...........",
+    };
+    const { body } = await request(app)
+      .post(`/api/articles/9999/comments`)
+      .send(newComment)
+      .expect(404);
+    expect(body.msg).toBe("Not Found");
+  });
+  test("400: Missing required fields", async () => {
+    const newComment = {
+      username: "butter_bridge",
+    };
+    const { body } = await request(app)
+      .post(`/api/articles/1/comments`)
+      .send(newComment)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("404: Username does not exist", async () => {
+    const newComment = {
+      username: "not_a_user",
+      body: "Right here, is a new comment...........",
+    };
+    const { body } = await request(app)
+      .post(`/api/articles/1/comments`)
+      .send(newComment)
+      .expect(404);
+    expect(body.msg).toBe("Not Found");
   });
 });
 
