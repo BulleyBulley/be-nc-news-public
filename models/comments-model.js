@@ -67,3 +67,22 @@ exports.updateCommentById = (comment_id, patchInfo) => {
       return result.rows;
     });
 };
+
+exports.updateCommentBodyByCommentId = (comment_id, patchInfo) => {
+  return db
+    .query(
+      `UPDATE comments SET body = $1  
+      WHERE comment_id = $2 RETURNING *;`,
+      [patchInfo, comment_id]
+    )
+    .then((result) => {
+      if (result.rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "Article Not Found" });
+      }
+      if (result.rows[0].votes === null) {
+        return Promise.reject({ status: 400, msg: "Bad Request" });
+      }
+      //console.log(result.rows)
+      return result.rows;
+    });
+};

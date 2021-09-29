@@ -496,4 +496,24 @@ describe("PATCH /api/articles/:article_id", () => {
   });
 });
 
+describe.only("PATCH /api/comments/:comment_id", () => {
+  test("200: Accepts update body object and responds with updated comment", async () => {
+    const comment_id = 1;
+    const commentUpdate = { body : "This is a patched comment body here....." };
+    const { body } = await request(app)
+      .patch(`/api/comments/${comment_id}`)
+      .send(commentUpdate)
+      .expect(200);
+    expect(body.comment).toMatchObject([
+      {
+        body: expect.any(String),
+        votes: expect.any(Number),
+        author: expect.any(String),
+        article_id: expect.any(Number),
+        created_at: expect.any(String),
+      },
+    ]);
+  });
+});
+
 
