@@ -323,7 +323,10 @@ describe("DELETE /api/comments/:comment_id", () => {
     const comment_id = 1;
     const { body } = await request(app)
       .delete(`/api/comments/${comment_id}`)
-      .expect(204);
+      .expect(204)
+      const { commentBody } = await request(app)
+      .get(`/api/comments/${comment_id}`)
+      .expect(404)
   });
   test("400: Bad Request for invalid id", async () => {
     const { body } = await request(app).delete(`/api/comments/$hg`).expect(400);
