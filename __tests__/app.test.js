@@ -439,3 +439,25 @@ describe("PATCH /api/comments/:comment_id", () => {
     expect(body.msg).toBe("Bad Request");
   });
 });
+
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("200: Accepts update object and responds with updated article", async () => {
+    const article_id = 1;
+    const articleUpdate = { body : "This is a patched body here....." };
+    const { body } = await request(app)
+      .patch(`/api/articles/${article_id}`)
+      .send(articleUpdate)
+      .expect(200);
+    expect(body.article).toMatchObject([
+      {
+        body: expect.any(String),
+        votes: expect.any(Number),
+        author: expect.any(String),
+        article_id: expect.any(Number),
+        created_at: expect.any(String),
+      },
+    ]);
+  });
+  
+});

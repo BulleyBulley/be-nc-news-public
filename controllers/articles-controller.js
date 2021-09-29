@@ -2,6 +2,7 @@ const {
   fetchArticle,
   updateArticleById,
   fetchAllArticles,
+  updateArticleBodyByArticleId
 } = require("../models/articles-model");
 
 exports.getArticleById = async (req, res, next) => {
@@ -13,19 +14,24 @@ exports.getArticleById = async (req, res, next) => {
     next(err);
   }
 };
-exports.patchArticleById = (req, res, next) => {
-  if (Object.keys(req.body).length > 1) {
+exports.patchArticleById = async (req, res, next) => {
+  try {
+    if (Object.keys(req.body).length > 1) {
     res.status(400).send({ msg: "Bad Request" });
   }
-  const { article_id } = req.params;
-  const patchInfo = req.body.inc_votes;
-  updateArticleById(article_id, patchInfo)
-    .then((updatedArticle) => {
-      res.status(200).send({ article: updatedArticle });
-    })
-    .catch((err) => {
-      next(err);
-    });
+    const { article_id } = req.params;
+    let patchInfo = req.body.inc_votes;
+    if (req.body.body) {
+      patchInfo = req.body.body
+    const updatedArticle = await updateArticleBodyByArticleId(article_id, patchInfo);
+    res.status(200).send({ article: updatedArticle });
+    } else {
+    const updatedArticle = await updateArticleById(article_id, patchInfo);
+    res.status(200).send({ article: updatedArticle });
+    }
+  } catch (err) {
+    next (err)
+  }
 };
 
 exports.getAllArticles = async (req, res, next) => {
