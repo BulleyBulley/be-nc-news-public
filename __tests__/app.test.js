@@ -551,4 +551,39 @@ describe("PATCH /api/comments/:comment_id", () => {
   });
 });
 
+describe("PATCH /api/users/:username", () => {
+  test("200: Accepts update name object and responds with updated user", async () => {
+    const username = 'rogersop';
+    const commentUpdate = { name : "Brand New Name" };
+    const { body } = await request(app)
+      .patch(`/api/users/${username}`)
+      .send(commentUpdate)
+      .expect(200);
+    expect(body.user).toMatchObject(
+      {
+        username: expect.any(String),
+        avatar_url: expect.any(String),
+        name: expect.any(String),
+      }
+    );
+    expect(body.user.name).toEqual("Brand New Name") 
+  });
+  test("200: Accepts update name object and responds with updated user", async () => {
+    const username = 'rogersop';
+    const commentUpdate = { avatar_url : "https://i1.sndcdn.com/avatars-000391461843-wddjdv-t500x500.jpg" };
+    const { body } = await request(app)
+      .patch(`/api/users/${username}`)
+      .send(commentUpdate)
+      .expect(200);
+    expect(body.user).toMatchObject(
+      {
+        username: expect.any(String),
+        avatar_url: expect.any(String),
+        name: expect.any(String),
+      }
+    );
+    expect(body.user.avatar_url).toEqual("https://i1.sndcdn.com/avatars-000391461843-wddjdv-t500x500.jpg") 
+  });
+})
+
 

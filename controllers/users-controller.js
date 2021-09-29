@@ -1,4 +1,4 @@
-const { fetchUsers, fetchUserByUsername } = require ("../models/users-model.js")
+const { fetchUsers, fetchUserByUsername, updateUserNameByUsername, updateUserAvatarByUsername } = require ("../models/users-model.js")
 
 exports.getUsers = async (req, res, next) => {
     try {
@@ -17,4 +17,25 @@ exports.getUsers = async (req, res, next) => {
      } catch(err) {
          next (err)
      }
+  }
+
+  exports.patchUserByUsername = async (req, res, next) => {
+    try {
+      if (Object.keys(req.body).length > 1) {
+      res.status(400).send({ msg: "Bad Request" });
+    }
+      const { username } = req.params;
+      let patchInfo = req.body.name;
+      if (req.body.avatar_url) {
+        patchInfo = req.body.avatar_url
+      const updatedUser = await updateUserAvatarByUsername(username, patchInfo);
+      res.status(200).send({ user: updatedUser });
+      } else {
+      const updatedUser = await updateUserNameByUsername(username, patchInfo);
+      res.status(200).send({ user: updatedUser });
+      }
+    } catch (err) {
+      next (err)
+    }
+
   }
