@@ -21,9 +21,6 @@ const seed = (data) => {
       return db.query("DROP TABLE IF EXISTS comments CASCADE;");
     })
     .then(() => {
-      
-    })
-    .then(() => {
       return db.query(`
     CREATE TABLE topics (
       slug VARCHAR(100) PRIMARY KEY,
@@ -47,7 +44,7 @@ const seed = (data) => {
       votes INT DEFAULT 0,
       topic VARCHAR(200) NOT NULL REFERENCES topics(slug) ON DELETE CASCADE,
       author VARCHAR(100) NOT NULL REFERENCES users(username) ON DELETE CASCADE,
-      created_at TEXT
+      created_at TIMESTAMP DEFAULT NOW()
    );`);
     })
     .then(() => {
@@ -57,13 +54,10 @@ const seed = (data) => {
       author VARCHAR(100) NOT NULL REFERENCES users(username) ON DELETE CASCADE,
       article_id INT REFERENCES articles(article_id) ON DELETE CASCADE,
       votes INT DEFAULT 0,
-      created_at VARCHAR(50),
+      created_at TIMESTAMP DEFAULT NOW(),
       body TEXT NOT NULL
     );`);
       S;
-    })
-    .then(() => {
-      
     })
     .then(() => {
       const queryStr = format(
@@ -78,7 +72,6 @@ const seed = (data) => {
       return db.query(queryStr);
     })
     .then(() => {
-      
       const queryStr = format(
         ` INSERT INTO users
       (username, avatar_url, name)
@@ -91,8 +84,6 @@ const seed = (data) => {
       return db.query(queryStr);
     })
     .then(() => {
-      
-
       const queryStr = format(
         `
     INSERT INTO articles
@@ -106,7 +97,6 @@ const seed = (data) => {
       return db.query(queryStr);
     })
     .then((result) => {
-      
       const queryStr = format(
         `
     INSERT INTO comments
@@ -118,8 +108,7 @@ const seed = (data) => {
         formatCommentsData(commentData)
       );
       return db.query(queryStr);
-    })
-    
+    });
 };
 
 module.exports = seed;

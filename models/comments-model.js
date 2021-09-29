@@ -25,11 +25,11 @@ exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
   };
 
   const { username, body } = newCommentInfo;
-  const date = new Date();
+  //const date = new Date();
   let result = await db.query(
-    `INSERT INTO comments (author, article_id, body, created_at) VALUES ($1, $2, $3, $4)
+    `INSERT INTO comments (author, article_id, body) VALUES ($1, $2, $3)
         RETURNING *;`,
-    [username, article_id, body, date]
+    [username, article_id, body]
   );
 
   return result.rows;
