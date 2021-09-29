@@ -52,8 +52,10 @@ exports.patchCommentById = async (req, res, next) => {
   let patchInfo = req.body.inc_votes;
   if (req.body.body) {
     patchInfo = req.body.body
-  }
   const updatedComment = await updateCommentBodyByCommentId(comment_id, patchInfo)
+  res.status(200).send({ comment: updatedComment });
+}
+  const updatedComment = await updateCommentById(comment_id, patchInfo)
   res.status(200).send({ comment: updatedComment });
   
 } catch (err) {

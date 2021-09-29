@@ -496,7 +496,7 @@ describe("PATCH /api/articles/:article_id", () => {
   });
 });
 
-describe.only("PATCH /api/comments/:comment_id", () => {
+describe("PATCH /api/comments/:comment_id", () => {
   test("200: Accepts update body object and responds with updated comment", async () => {
     const comment_id = 1;
     const commentUpdate = { body : "This is a patched comment body here....." };
@@ -513,6 +513,41 @@ describe.only("PATCH /api/comments/:comment_id", () => {
         created_at: expect.any(String),
       },
     ]);
+  });
+  test("404: valid but non-existent comment_id", async () => {
+    const comment_id = 9999;
+    const commentUpdate = { inc_votes: 25 };
+    const { body } = await request(app)
+      .patch(`/api/comments/${comment_id}`)
+      .send(commentUpdate)
+      .expect(404);
+    expect(body.msg).toBe("Comment Not Found");
+  });
+  test("400: bad comment_id", async () => {
+    const commentUpdate = { body : "This is a patched comment body here....." };
+    const { body } = await request(app)
+      .patch("/api/comments/whatasillycommentyouare")
+      .send(commentUpdate)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("400: no inc_votes on request body", async () => {
+    const comment_id = 1;
+    const commentUpdate = { bingobady : "This is a patched comment body here....." };
+    const { body } = await request(app)
+      .patch(`/api/comments/${comment_id}`)
+      .send(commentUpdate)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("400: Other property on request body", async () => {
+    const comment_id = 1;
+    const commentUpdate = { body : "patched comment body ", monkeys_given: 'none' };
+    const { body } = await request(app)
+      .patch(`/api/comments/${comment_id}`)
+      .send(commentUpdate)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
   });
 });
 

@@ -77,7 +77,7 @@ exports.updateCommentBodyByCommentId = (comment_id, patchInfo) => {
     )
     .then((result) => {
       if (result.rows.length === 0) {
-        return Promise.reject({ status: 404, msg: "Article Not Found" });
+        return Promise.reject({ status: 404, msg: "Comment Not Found" });
       }
       if (result.rows[0].votes === null) {
         return Promise.reject({ status: 400, msg: "Bad Request" });
