@@ -12,7 +12,7 @@ exports.fetchArticle = async (article_id) => {
   if (result.rows.length === 0) {
     return Promise.reject({ status: 404, msg: "Article Not Found" });
   }
-  return result.rows;
+    return result.rows[0];
 };
 
 exports.updateArticleById = (article_id, patchInfo) => {

@@ -8,7 +8,7 @@ exports.getArticleById = async (req, res, next) => {
   try {
     const { article_id } = req.params;
     const articleItem = await fetchArticle(article_id);
-    res.status(200).send({ article: articleItem });
+    res.status(200).send( articleItem );
   } catch (err) {
     next(err);
   }
@@ -26,7 +26,6 @@ exports.patchArticleById = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-  //rewrite using await
 };
 
 exports.getAllArticles = async (req, res, next) => {
@@ -34,7 +33,7 @@ exports.getAllArticles = async (req, res, next) => {
     const { sort_by, order, topic, limit, p } = req.query;
    
     const allArticles = await fetchAllArticles(sort_by, order, topic, limit, p);
-    //if (allArticles.length === 0) res.status(404).send({ msg: "Not Found" });
+    
     res.status(200).send({ allArticles });
   } catch (err) {
     next(err);

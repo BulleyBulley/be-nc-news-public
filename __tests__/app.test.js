@@ -38,9 +38,7 @@ describe("GET /api/articles/:article_id", () => {
     const { body } = await request(app)
       .get(`/api/articles/${article_id}`)
       .expect(200);
-    expect(body.article.length).toBeGreaterThan(0);
-    body.article.forEach((article) => {
-      expect(article).toMatchObject({
+      expect(body).toMatchObject({
         author: expect.any(String),
         title: expect.any(String),
         article_id: expect.any(Number),
@@ -49,7 +47,6 @@ describe("GET /api/articles/:article_id", () => {
         created_at: expect.any(String),
         votes: expect.any(Number),
         comment_count: expect.any(String),
-      });
     });
   });
   test("404: valid but non-existent article_id", async () => {
