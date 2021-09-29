@@ -65,12 +65,13 @@
   "PATCH /api/articles/:article_id": {
     "description": "Accepts an object and responds with updated article",
     "queries": [],
-    "request body": { "inc_votes": 1 },
+    "votes request body": { "inc_votes": 1 },
+    "body request body": { "body": "Patches the article body here......" },
     "exampleResponse": {
       "article": {
         "article_id": 1,
         "title": "Running a Node App",
-        "body": "This is part two of a series on how to get up and running with Systemd and Node.js. This part dives deeper into how to successfully run your app with systemd long-term, and how to set it up in a production environment.",
+        "body": "Patches the article body here......",
         "votes": 79,
         "topic": "coding",
         "author": "jessjelly",

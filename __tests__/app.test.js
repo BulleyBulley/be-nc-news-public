@@ -442,7 +442,7 @@ describe("PATCH /api/comments/:comment_id", () => {
 
 
 describe("PATCH /api/articles/:article_id", () => {
-  test("200: Accepts update object and responds with updated article", async () => {
+  test("200: Accepts update body object and responds with updated article", async () => {
     const article_id = 1;
     const articleUpdate = { body : "This is a patched body here....." };
     const { body } = await request(app)
@@ -494,6 +494,6 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(400);
     expect(body.msg).toBe("Bad Request");
   });
-  
-  
 });
+
+
