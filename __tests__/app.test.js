@@ -365,11 +365,11 @@ describe("GET api/users/:username", () => {
       },
     ]);
   });
-  test("404: valid but non-existent username", async () => {
+  test("400: Invalid username", async () => {
     const { body } = await request(app)
       .get("/api/users/notauser123")
-      .expect(404);
-    expect(body.msg).toBe("User Not Found");
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
   });
 });
 

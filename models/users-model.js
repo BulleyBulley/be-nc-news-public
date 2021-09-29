@@ -12,7 +12,7 @@ exports.fetchUserByUsername = async (username) => {
         `SELECT * FROM users WHERE username = $1;`,[username]
     )
     if (result.rows.length === 0) {
-        return Promise.reject({ status: 404, msg: "User Not Found" });
+        return Promise.reject({ status: 400, msg: "Bad Request" });
       }    
 
     return result.rows
