@@ -7,4 +7,14 @@ exports.showAllTopics = () => {
   });
 };
 
+exports.insertNewTopic = async (newTopicInfo) => {
+  const { slug, description } = newTopicInfo;
 
+  let result = await db.query(
+    `INSERT INTO topics (slug, description) VALUES ($1, $2)
+        RETURNING *;`,
+    [slug, description]
+  );
+
+  return result.rows[0];
+};

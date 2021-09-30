@@ -764,3 +764,44 @@ describe("POST /api/articles", () => {
       expect(body.msg).toBe("Bad Request");
   });
 })
+
+describe.only("POST /api/topics", () => {
+  test("201: Adds new topic", async () => {
+    const newTopic = {
+      slug: 'cheese',
+      description: 'Cheese is life',
+          };
+    const { body } = await request(app)
+      .post(`/api/topics`)
+      .send(newTopic)
+      .expect(201)
+    expect(body.newTopic).toMatchObject(
+      {
+        slug: expect.any(String),
+        description: expect.any(String),
+      },
+    );
+  });
+  test("400: Bad Request for empty value", async () => {
+    const newTopic = {
+      slug: 'cheese',
+      description: null,
+          };
+          const { body } = await request(app)
+          .post(`/api/topics`)
+          .send(newTopic)
+          .expect(400)
+      expect(body.msg).toBe("Bad Request");
+  });
+  test("400: Bad Request for missing column", async () => {
+    const newTopic = {
+      slug: 'cheese',
+                };
+          const { body } = await request(app)
+          .post(`/api/topics`)
+          .send(newTopic)
+          .expect(400)
+      expect(body.msg).toBe("Bad Request");
+  });
+})
+
