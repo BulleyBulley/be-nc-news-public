@@ -42,3 +42,15 @@ exports.updateUserAvatarByUsername = async (username, patchInfo) => {
   
   return result.rows[0];
 };
+
+exports.insertNewUser = async (newUserInfo) => {
+  const { username, avatar_url, name } = newUserInfo;
+
+  let result = await db.query(
+    `INSERT INTO users (username, avatar_url, name) VALUES ($1, $2, $3)
+        RETURNING *;`,
+    [username, avatar_url, name]
+  );
+
+  return result.rows;
+};

@@ -648,3 +648,29 @@ describe("GET /api/articles", () => {
     expect(body.allArticles.length).toBe(0);
   });
 });
+
+describe("POST /api/users", () => {
+  test("201: Adds new user", async () => {
+    const newUser = {
+      username: 'tweedy_impertinence',
+      name: 'lester',
+      avatar_url:
+        'https://upload.wikimedia.org/wikipedia/en/3/31/Lester_Freamon.jpg'
+    }
+    const { body } = await request(app)
+      .post(`/api/users`)
+      .send(newUser)
+      .expect(201);
+    expect(body.newUser).toMatchObject([
+      {
+        username: expect.any(String),
+        avatar_url: expect.any(String),
+        name: expect.any(String),
+      }
+    ]);
+    const checkUser = await request(app)
+    .get(`/api/users/tweedy_impertinence`)
+    .expect(200)
+  });
+})
+

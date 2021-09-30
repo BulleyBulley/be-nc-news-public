@@ -1,4 +1,4 @@
-const { fetchUsers, fetchUserByUsername, updateUserNameByUsername, updateUserAvatarByUsername } = require ("../models/users-model.js")
+const { fetchUsers, fetchUserByUsername, updateUserNameByUsername, updateUserAvatarByUsername, insertNewUser } = require ("../models/users-model.js")
 
 exports.getUsers = async (req, res, next) => {
     try {
@@ -39,5 +39,15 @@ exports.getUsers = async (req, res, next) => {
     } catch (err) {
       next (err)
     }
-
   }
+
+  exports.postNewUser = async (req, res, next) => {
+    try {
+      
+      const newUserInfo = req.body;
+      const newUser = await insertNewUser(newUserInfo);
+      res.status(201).send({ newUser });
+    } catch (err) {
+      next(err);
+    }
+  };
