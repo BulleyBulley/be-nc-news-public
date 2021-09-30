@@ -129,9 +129,7 @@ describe("PATCH /api/articles/:article_id", () => {
 
 describe("GET /api/articles", () => {
   test("200: Responds with an array of articles, with comment count added", async () => {
-    const { body } = await request(app)
-    .get(`/api/articles`)
-    .expect(200);
+    const { body } = await request(app).get(`/api/articles`).expect(200);
     expect(body.allArticles.length).toBeGreaterThan(0);
     body.allArticles.forEach((article) => {
       expect(article).toMatchObject({
@@ -619,28 +617,34 @@ describe("PATCH /api/users/:username", () => {
       .expect(400);
     expect(body.msg).toBe("Bad Request");
   });
-      test("400: Other property on request body", async () => {
+  test("400: Other property on request body", async () => {
     const username = "rogersop";
     const userUpdate = {
-      name:
-        "Peeeeeeeete", violinSize: 'The Worlds Smallest'
+      name: "Peeeeeeeete",
+      violinSize: "The Worlds Smallest",
     };
     const { body } = await request(app)
-    .patch(`/api/users/${username}`)
-    .send(userUpdate)
-    .expect(400);
-  expect(body.msg).toBe("Bad Request");
+      .patch(`/api/users/${username}`)
+      .send(userUpdate)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
   });
 });
 
 describe("GET /api/articles", () => {
   test("200: Responds with an array of articles matching search", async () => {
     const { body } = await request(app)
-    .get(`/api/articles?title=laptop`)
-    .expect(200);
+      .get(`/api/articles?title=laptop`)
+      .expect(200);
     expect(body.allArticles.length).toBeGreaterThan(0);
     body.allArticles.forEach((article) => {
-      article.title.includes('laptop')
+      article.title.includes("laptop");
+    });
   });
-})
-})
+  test("200: Responds with an empty array for valid but empty search", async () => {
+    const { body } = await request(app)
+      .get(`/api/articles?title=calzonezone`)
+      .expect(200);
+    expect(body.allArticles.length).toBe(0);
+  });
+});

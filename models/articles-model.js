@@ -40,6 +40,7 @@ exports.fetchAllArticles = async (sort_by, order, topic, limit = 10, p = 1, titl
   const queryValues = [limit, offset];
   const checkedSortBy = await checkSortByExists(sort_by);
   const checkedOrder = await checkOrderExists(order);
+  
   let searchTerm = ""
   if(title) {
   searchTerm = dbSearch(('title'), title)
