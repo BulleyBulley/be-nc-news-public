@@ -1,10 +1,8 @@
 const db = require("../db/connection");
 
-exports.showAllTopics = () => {
-  let queryStr = `SELECT * FROM topics;`;
-  return db.query(queryStr).then((result) => {
-    return result.rows;
-  });
+exports.showAllTopics = async () => {
+  let result = await db.query(`SELECT * FROM topics;`);
+  return result.rows;
 };
 
 exports.insertNewTopic = async (newTopicInfo) => {

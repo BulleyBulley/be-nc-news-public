@@ -765,7 +765,7 @@ describe("POST /api/articles", () => {
   });
 })
 
-describe.only("POST /api/topics", () => {
+describe("POST /api/topics", () => {
   test("201: Adds new topic", async () => {
     const newTopic = {
       slug: 'cheese',
