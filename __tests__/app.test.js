@@ -661,13 +661,13 @@ describe("POST /api/users", () => {
       .post(`/api/users`)
       .send(newUser)
       .expect(201)
-    expect(body.newUser).toMatchObject([
+    expect(body.newUser).toMatchObject(
       {
         username: expect.any(String),
         avatar_url: expect.any(String),
         name: expect.any(String),
       },
-    ]);
+    );
     const checkUser = await request(app)
       .get(`/api/users/tweedy_impertinence`)
       .expect(200);
@@ -711,5 +711,30 @@ describe("POST /api/users", () => {
       .expect(400)
       expect(body.msg).toBe("Bad Request");
   });
-
 });
+
+describe.only("POST /api/articles", () => {
+  test("201: Adds new article", async () => {
+    const newArticle = {
+      title: 'Are we living in an existential nightmare?',
+      topic: 'paper',
+      author: 'butter_bridge',
+      body: 'Or am I just hungry?',
+      votes: 0
+    };
+    const { body } = await request(app)
+      .post(`/api/articles`)
+      .send(newArticle)
+      .expect(201)
+    expect(body.newArticle).toMatchObject(
+      {
+        author: expect.any(String),
+        title: expect.any(String),
+        article_id: expect.any(Number),
+        topic: expect.any(String),
+        created_at: expect.any(String),
+        votes: expect.any(Number),
+      },
+    );
+  });
+})

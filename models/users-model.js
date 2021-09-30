@@ -52,5 +52,5 @@ exports.insertNewUser = async (newUserInfo) => {
     [username, avatar_url, name]
   );
   
-  return result.rows;
+  return result.rows[0];
 };

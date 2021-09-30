@@ -3,6 +3,7 @@ const {
   updateArticleVotesById,
   fetchAllArticles,
   updateArticleBodyByArticleId,
+  insertNewArticle
 } = require("../models/articles-model");
 
 exports.getArticleById = async (req, res, next) => {
@@ -42,6 +43,19 @@ exports.getAllArticles = async (req, res, next) => {
     res.status(200).send({ allArticles });
      
   } catch (err) {
+    next(err);
+  }
+};
+
+exports.postNewArticle = async (req, res, next) => {
+  try {
+    const newArticleInfo = req.body;
+    //console.log(newArticleInfo)
+    const newArticle = await insertNewArticle(newArticleInfo);
+    res.status(201).send({ newArticle });
+    
+  } catch (err) {
+    
     next(err);
   }
 };

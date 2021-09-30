@@ -74,3 +74,15 @@ exports.updateArticleBodyByArticleId = async (article_id, patchInfo) => {
   }
   return result.rows;
 };
+
+exports.insertNewArticle = async (newArticleInfo) => {
+  const { title, topic, author, body, votes } = newArticleInfo;
+
+  let result = await db.query(
+    `INSERT INTO articles (title, topic, author, body, votes) VALUES ($1, $2, $3, $4, $5)
+        RETURNING *;`,
+    [title, topic, author, body, votes]
+  );
+  
+  return result.rows[0];
+};
