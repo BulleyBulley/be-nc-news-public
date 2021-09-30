@@ -50,9 +50,9 @@ exports.getAllArticles = async (req, res, next) => {
 exports.postNewArticle = async (req, res, next) => {
   try {
     const newArticleInfo = req.body;
-    //console.log(newArticleInfo)
     const newArticle = await insertNewArticle(newArticleInfo);
-    res.status(201).send({ newArticle });
+    const articleItem = await fetchArticle(newArticle.article_id);
+    res.status(201).send( articleItem );
     
   } catch (err) {
     

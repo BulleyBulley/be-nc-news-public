@@ -713,20 +713,19 @@ describe("POST /api/users", () => {
   });
 });
 
-describe.only("POST /api/articles", () => {
+describe("POST /api/articles", () => {
   test("201: Adds new article", async () => {
     const newArticle = {
       title: 'Are we living in an existential nightmare?',
       topic: 'paper',
       author: 'butter_bridge',
       body: 'Or am I just hungry?',
-      votes: 0
-    };
+          };
     const { body } = await request(app)
       .post(`/api/articles`)
       .send(newArticle)
       .expect(201)
-    expect(body.newArticle).toMatchObject(
+    expect(body).toMatchObject(
       {
         author: expect.any(String),
         title: expect.any(String),
@@ -734,7 +733,34 @@ describe.only("POST /api/articles", () => {
         topic: expect.any(String),
         created_at: expect.any(String),
         votes: expect.any(Number),
+        comment_count: expect.any(String),
       },
     );
+  });
+  test("400: Bad Request for empty value", async () => {
+    const newArticle = {
+      
+      topic: 'paper',
+      author: 'butter_bridge',
+      body: 'Or am I just hungry?',
+          };
+          const { body } = await request(app)
+          .post(`/api/articles`)
+          .send(newArticle)
+          .expect(400)
+      expect(body.msg).toBe("Bad Request");
+  });
+  test("400: Bad Request for missing column", async () => {
+    const newArticle = {
+      title: 'Are we living in an existential nightmare?',
+      topic: 'paper',
+      author: null,
+      body: 'Or am I just hungry?',
+          };
+          const { body } = await request(app)
+          .post(`/api/articles`)
+          .send(newArticle)
+          .expect(400)
+      expect(body.msg).toBe("Bad Request");
   });
 })

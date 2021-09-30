@@ -79,9 +79,9 @@ exports.insertNewArticle = async (newArticleInfo) => {
   const { title, topic, author, body, votes } = newArticleInfo;
 
   let result = await db.query(
-    `INSERT INTO articles (title, topic, author, body, votes) VALUES ($1, $2, $3, $4, $5)
+    `INSERT INTO articles (title, topic, author, body) VALUES ($1, $2, $3, $4)
         RETURNING *;`,
-    [title, topic, author, body, votes]
+    [title, topic, author, body]
   );
   
   return result.rows[0];
