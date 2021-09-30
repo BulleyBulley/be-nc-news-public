@@ -2,6 +2,7 @@ const db = require("../db/connection");
 const {
   checkSortByExists,
   checkOrderExists,
+  dbSearch
 } = require("../db/utils/data-manipulation");
 
 exports.fetchArticle = async (article_id) => {
@@ -34,23 +35,27 @@ exports.updateArticleVotesById = async (article_id, patchVotesInfo) => {
   return result.rows;
 };
 
-exports.fetchAllArticles = async (sort_by, order, topic, limit = 10, p = 1) => {
+exports.fetchAllArticles = async (sort_by, order, topic, limit = 10, p = 1, title) => {
   const offset = (p - 1) * limit;
   const queryValues = [limit, offset];
   const checkedSortBy = await checkSortByExists(sort_by);
   const checkedOrder = await checkOrderExists(order);
+  let searchTerm = ""
+  if(title) {
+  searchTerm = dbSearch(('title'), title)
+    }
   let queryStr = `
   SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comment_id) 
   AS comment_count
   FROM articles
   LEFT JOIN comments ON articles.article_id = comments.article_id
+  ${searchTerm}
   GROUP BY articles.article_id`;
 
   if (topic) {
     queryValues.push(topic);
     queryStr += ` HAVING articles.topic = $3`;
   }
-
   queryStr += ` ORDER BY ${checkedSortBy} ${checkedOrder} LIMIT $1 OFFSET $2;`;
   const result = await db.query(queryStr, queryValues);
   return result.rows;

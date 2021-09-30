@@ -54,3 +54,9 @@ exports.checkOrderExists = (order) => {
     return order.toUpperCase()
   } return Promise.reject({ status: 400, msg: "Bad Request" })
 }
+
+exports.dbSearch = (column, search) => {
+  
+  const result = `WHERE ${column} @@ to_tsquery('${search}')`
+  return result
+}

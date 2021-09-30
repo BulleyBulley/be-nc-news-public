@@ -4,6 +4,7 @@ const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 require("jest-sorted");
 const app = require("../app");
+const { search } = require("superagent");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -128,7 +129,9 @@ describe("PATCH /api/articles/:article_id", () => {
 
 describe("GET /api/articles", () => {
   test("200: Responds with an array of articles, with comment count added", async () => {
-    const { body } = await request(app).get(`/api/articles`).expect(200);
+    const { body } = await request(app)
+    .get(`/api/articles`)
+    .expect(200);
     expect(body.allArticles.length).toBeGreaterThan(0);
     body.allArticles.forEach((article) => {
       expect(article).toMatchObject({
@@ -629,3 +632,15 @@ describe("PATCH /api/users/:username", () => {
   expect(body.msg).toBe("Bad Request");
   });
 });
+
+describe("GET /api/articles", () => {
+  test("200: Responds with an array of articles matching search", async () => {
+    const { body } = await request(app)
+    .get(`/api/articles?title=laptop`)
+    .expect(200);
+    expect(body.allArticles.length).toBeGreaterThan(0);
+    body.allArticles.forEach((article) => {
+      article.title.includes('laptop')
+  });
+})
+})

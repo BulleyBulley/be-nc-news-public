@@ -4,7 +4,8 @@ const {
   formatArticlesData,
   formatCommentsData,
   checkSortByExists,
-  checkOrderExists
+  checkOrderExists,
+  dbSearch
 } = require("../db/utils/data-manipulation.js");
 
 describe("formatTopicsData", () => {
@@ -218,4 +219,13 @@ describe('checkOrderExists', () => {
       expect(checkOrderExists('UPPITY')).rejects.toEqual({"msg": "Bad Request", "status": 400});
   
   })
+});
+
+describe('dbSearch', () => {
+  test('insert parameters into search string and return', () => {
+    const column = 'title'
+    const search = 'Vanilla Slice'
+    const expectedOutput = `WHERE title @@ to_tsquery('Vanilla Slice')`
+    expect(dbSearch(column, search)).toEqual(expectedOutput);
+  });
 });
