@@ -31,7 +31,7 @@ const seed = (data) => {
       return db.query(`
     CREATE TABLE users (
       username VARCHAR(100) PRIMARY KEY,
-      avatar_url VARCHAR(300),
+      avatar_url TEXT,
       name TEXT NOT NULL
     );`);
     })

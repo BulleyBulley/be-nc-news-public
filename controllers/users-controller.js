@@ -26,8 +26,10 @@ exports.getUsers = async (req, res, next) => {
     }
       const { username } = req.params;
       let patchInfo = req.body.name;
+      
       if (req.body.avatar_url) {
         patchInfo = req.body.avatar_url
+       
       const updatedUser = await updateUserAvatarByUsername(username, patchInfo);
       res.status(200).send({ user: updatedUser });
       } else {

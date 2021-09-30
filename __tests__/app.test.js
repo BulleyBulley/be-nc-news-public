@@ -38,15 +38,15 @@ describe("GET /api/articles/:article_id", () => {
     const { body } = await request(app)
       .get(`/api/articles/${article_id}`)
       .expect(200);
-      expect(body).toMatchObject({
-        author: expect.any(String),
-        title: expect.any(String),
-        article_id: expect.any(Number),
-        body: expect.any(String),
-        topic: expect.any(String),
-        created_at: expect.any(String),
-        votes: expect.any(Number),
-        comment_count: expect.any(String),
+    expect(body).toMatchObject({
+      author: expect.any(String),
+      title: expect.any(String),
+      article_id: expect.any(Number),
+      body: expect.any(String),
+      topic: expect.any(String),
+      created_at: expect.any(String),
+      votes: expect.any(Number),
+      comment_count: expect.any(String),
     });
   });
   test("404: valid but non-existent article_id", async () => {
@@ -247,7 +247,7 @@ describe("GET /api/articles/:article_id/comments", () => {
     const { body } = await request(app)
       .get(`/api/articles/${article_id}/comments`)
       .expect(200);
-      
+
     expect(body.commentsByArticleId).toEqual([]);
   });
 });
@@ -323,10 +323,10 @@ describe("DELETE /api/comments/:comment_id", () => {
     const comment_id = 1;
     const { body } = await request(app)
       .delete(`/api/comments/${comment_id}`)
-      .expect(204)
-      const { commentBody } = await request(app)
+      .expect(204);
+    const { commentBody } = await request(app)
       .get(`/api/comments/${comment_id}`)
-      .expect(404)
+      .expect(404);
   });
   test("400: Bad Request for invalid id", async () => {
     const { body } = await request(app).delete(`/api/comments/$hg`).expect(400);
@@ -440,11 +440,10 @@ describe("PATCH /api/comments/:comment_id", () => {
   });
 });
 
-
 describe("PATCH /api/articles/:article_id", () => {
   test("200: Accepts update body object and responds with updated article", async () => {
     const article_id = 1;
-    const articleUpdate = { body : "This is a patched body here....." };
+    const articleUpdate = { body: "This is a patched body here....." };
     const { body } = await request(app)
       .patch(`/api/articles/${article_id}`)
       .send(articleUpdate)
@@ -461,7 +460,7 @@ describe("PATCH /api/articles/:article_id", () => {
   });
   test("404: valid but non-existent article_id", async () => {
     const article_id = 9999;
-    const articleUpdate = { body : "patched body here....." };
+    const articleUpdate = { body: "patched body here....." };
     const { body } = await request(app)
       .patch(`/api/articles/${article_id}`)
       .send(articleUpdate)
@@ -469,7 +468,7 @@ describe("PATCH /api/articles/:article_id", () => {
     expect(body.msg).toBe("Article Not Found");
   });
   test("400: bad article_id", async () => {
-    const articleUpdate = { body : "patched body here....." };;
+    const articleUpdate = { body: "patched body here....." };
     const { body } = await request(app)
       .patch("/api/articles/whatabadarticleyouare")
       .send(articleUpdate)
@@ -478,7 +477,7 @@ describe("PATCH /api/articles/:article_id", () => {
   });
   test("400: no body on request body", async () => {
     const article_id = 1;
-    const articleUpdate = { baddy : "This is a patched body here....." };;
+    const articleUpdate = { baddy: "This is a patched body here....." };
     const { body } = await request(app)
       .patch(`/api/articles/${article_id}`)
       .send(articleUpdate)
@@ -487,7 +486,10 @@ describe("PATCH /api/articles/:article_id", () => {
   });
   test("400: Other property on request body", async () => {
     const article_id = 1;
-    const articleUpdate = { body : "This is a patched body here.....", loveOfParsnips: "none" };
+    const articleUpdate = {
+      body: "This is a patched body here.....",
+      loveOfParsnips: "none",
+    };
     const { body } = await request(app)
       .patch(`/api/articles/${article_id}`)
       .send(articleUpdate)
@@ -499,7 +501,7 @@ describe("PATCH /api/articles/:article_id", () => {
 describe("PATCH /api/comments/:comment_id", () => {
   test("200: Accepts update body object and responds with updated comment", async () => {
     const comment_id = 1;
-    const commentUpdate = { body : "This is a patched comment body here....." };
+    const commentUpdate = { body: "This is a patched comment body here....." };
     const { body } = await request(app)
       .patch(`/api/comments/${comment_id}`)
       .send(commentUpdate)
@@ -524,16 +526,18 @@ describe("PATCH /api/comments/:comment_id", () => {
     expect(body.msg).toBe("Comment Not Found");
   });
   test("400: bad comment_id", async () => {
-    const commentUpdate = { body : "This is a patched comment body here....." };
+    const commentUpdate = { body: "This is a patched comment body here....." };
     const { body } = await request(app)
       .patch("/api/comments/whatasillycommentyouare")
       .send(commentUpdate)
       .expect(400);
     expect(body.msg).toBe("Bad Request");
   });
-  test("400: no inc_votes on request body", async () => {
+  test("400: invalid body key", async () => {
     const comment_id = 1;
-    const commentUpdate = { bingobady : "This is a patched comment body here....." };
+    const commentUpdate = {
+      bingobady: "This is a patched comment body here.....",
+    };
     const { body } = await request(app)
       .patch(`/api/comments/${comment_id}`)
       .send(commentUpdate)
@@ -542,7 +546,10 @@ describe("PATCH /api/comments/:comment_id", () => {
   });
   test("400: Other property on request body", async () => {
     const comment_id = 1;
-    const commentUpdate = { body : "patched comment body ", monkeys_given: 'none' };
+    const commentUpdate = {
+      body: "patched comment body ",
+      monkeys_given: "none",
+    };
     const { body } = await request(app)
       .patch(`/api/comments/${comment_id}`)
       .send(commentUpdate)
@@ -553,37 +560,72 @@ describe("PATCH /api/comments/:comment_id", () => {
 
 describe("PATCH /api/users/:username", () => {
   test("200: Accepts update name object and responds with updated user", async () => {
-    const username = 'rogersop';
-    const commentUpdate = { name : "Brand New Name" };
+    const username = "rogersop";
+    const userUpdate = { name: "Brand New Name" };
     const { body } = await request(app)
       .patch(`/api/users/${username}`)
-      .send(commentUpdate)
+      .send(userUpdate)
       .expect(200);
-    expect(body.user).toMatchObject(
-      {
-        username: expect.any(String),
-        avatar_url: expect.any(String),
-        name: expect.any(String),
-      }
-    );
-    expect(body.user.name).toEqual("Brand New Name") 
+    expect(body.user).toMatchObject({
+      username: expect.any(String),
+      avatar_url: expect.any(String),
+      name: expect.any(String),
+    });
+    expect(body.user.name).toEqual("Brand New Name");
   });
-  test("200: Accepts update name object and responds with updated user", async () => {
-    const username = 'rogersop';
-    const commentUpdate = { avatar_url : "https://i1.sndcdn.com/avatars-000391461843-wddjdv-t500x500.jpg" };
+  test("200: Accepts update avatar_url object and responds with updated user", async () => {
+    const username = "rogersop";
+    const userUpdate = {
+      avatar_url:
+        "https://i1.sndcdn.com/avatars-000391461843-wddjdv-t500x500.jpg",
+    };
     const { body } = await request(app)
       .patch(`/api/users/${username}`)
-      .send(commentUpdate)
+      .send(userUpdate)
       .expect(200);
-    expect(body.user).toMatchObject(
-      {
-        username: expect.any(String),
-        avatar_url: expect.any(String),
-        name: expect.any(String),
-      }
+    expect(body.user).toMatchObject({
+      username: expect.any(String),
+      avatar_url: expect.any(String),
+      name: expect.any(String),
+    });
+    expect(body.user.avatar_url).toEqual(
+      "https://i1.sndcdn.com/avatars-000391461843-wddjdv-t500x500.jpg"
     );
-    expect(body.user.avatar_url).toEqual("https://i1.sndcdn.com/avatars-000391461843-wddjdv-t500x500.jpg") 
   });
-})
-
-
+  test("404: valid but non-existent username", async () => {
+    const username = "bingbob";
+    const userUpdate = {
+      avatar_url:
+        "https://i1.sndcdn.com/avatars-000391461843-wddjdv-t500x500.jpg",
+    };
+    const { body } = await request(app)
+      .patch(`/api/users/${username}`)
+      .send(userUpdate)
+      .expect(404);
+    expect(body.msg).toBe("Not Found");
+  });
+  test("400: invalid key", async () => {
+    const username = "rogersop";
+    const userUpdate = {
+      flavatar_url:
+        "https://i1.sndcdn.com/avatars-000391461843-wddjdv-t500x500.jpg",
+    };
+    const { body } = await request(app)
+      .patch(`/api/users/${username}`)
+      .send(userUpdate)
+      .expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+      test("400: Other property on request body", async () => {
+    const username = "rogersop";
+    const userUpdate = {
+      name:
+        "Peeeeeeeete", violinSize: 'The Worlds Smallest'
+    };
+    const { body } = await request(app)
+    .patch(`/api/users/${username}`)
+    .send(userUpdate)
+    .expect(400);
+  expect(body.msg).toBe("Bad Request");
+  });
+});
