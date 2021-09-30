@@ -763,6 +763,19 @@ describe("POST /api/articles", () => {
           .expect(400)
       expect(body.msg).toBe("Bad Request");
   });
+  test("400: Bad Request for non-existent topic", async () => {
+    const newArticle = {
+      title: 'Are we living in an existential nightmare?',
+      topic: 'non-existent topic',
+      author: 'butter_bridge',
+      body: 'Or am I just hungry?',
+          };;
+          const { body } = await request(app)
+          .post(`/api/articles`)
+          .send(newArticle)
+          .expect(400)
+      expect(body.msg).toBe("Bad Request");
+  });
 })
 
 describe("POST /api/topics", () => {
@@ -804,4 +817,28 @@ describe("POST /api/topics", () => {
       expect(body.msg).toBe("Bad Request");
   });
 })
+
+describe('DELETE Given article by id', () => {
+  test('204: Delete article with valid id ', async () => {
+    const article_id = 1
+    const body = await request(app)
+          .delete(`/api/articles/${article_id}`)
+          .expect(204)
+    const article = await request(app)
+      .get(`/api/articles/${article_id}`)
+      .expect(404);
+  });
+  test("400: Bad Request for invalid id", async () => {
+    const { body } = await request(app)
+    .delete(`/api/articles/$hg`).expect(400);
+    expect(body.msg).toBe("Bad Request");
+  });
+  test("404: Not Found for non existent comment_id", async () => {
+    const article_id = 9999999;
+    const { body } = await request(app)
+      .delete(`/api/articles/${article_id}`)
+      .expect(404);
+    expect(body.msg).toBe("Not Found");
+  });
+});
 

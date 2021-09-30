@@ -2,7 +2,7 @@ const db = require("../db/connection");
 const {
   checkSortByExists,
   checkOrderExists,
-  dbSearch
+  dbSearch,
 } = require("../db/utils/data-manipulation");
 
 exports.fetchArticle = async (article_id) => {
@@ -35,15 +35,22 @@ exports.updateArticleVotesById = async (article_id, patchVotesInfo) => {
   return result.rows;
 };
 
-exports.fetchAllArticles = async (sort_by, order, topic, limit = 10, p = 1, title) => {
+exports.fetchAllArticles = async (
+  sort_by,
+  order,
+  topic,
+  limit = 10,
+  p = 1,
+  title
+) => {
   const offset = (p - 1) * limit;
   const queryValues = [limit, offset];
   const checkedSortBy = await checkSortByExists(sort_by);
   const checkedOrder = await checkOrderExists(order);
-  
-  let searchTerm = ""
-  if(title) {
-  searchTerm = dbSearch(('title'), title)
+
+  let searchTerm = "";
+  if (title) {
+    searchTerm = dbSearch("title", title);
   }
   let queryStr = `
   SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comment_id) 
@@ -83,6 +90,19 @@ exports.insertNewArticle = async (newArticleInfo) => {
         RETURNING *;`,
     [title, topic, author, body]
   );
-  
+
   return result.rows[0];
+};
+
+exports.removeArticleById = async (article_id) => {
+  const result = await db.query(
+    `DELETE FROM articles WHERE article_id = $1
+RETURNING *;`,
+    [article_id]
+  );
+  if (result.rows.length !== 0) {
+    return result.rows.length[0];
+  }
+
+  return Promise.reject({ status: 404, msg: "Not Found" });
 };
