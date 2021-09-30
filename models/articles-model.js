@@ -43,7 +43,7 @@ exports.fetchAllArticles = async (sort_by, order, topic, limit = 10, p = 1, titl
   let searchTerm = ""
   if(title) {
   searchTerm = dbSearch(('title'), title)
-    }
+  }
   let queryStr = `
   SELECT articles.author, title, articles.article_id, topic, articles.created_at, articles.votes, COUNT(comment_id) 
   AS comment_count
