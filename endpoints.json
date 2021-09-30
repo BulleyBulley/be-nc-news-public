@@ -146,7 +146,6 @@
   },
   "PATCH /api/comments/:comment_id": {
     "description": "Accepts an object and responds with updated comment",
-    "queries": [],
     "request body": { "inc_votes": 1 },
     "exampleResponse": {
       "comment": [{
@@ -156,6 +155,24 @@
         "article_id": 9,
         "created_at": "new Date(1586179020000)"
       }]
+    }
+  },
+  "POST /api/users": {
+    "description": "Accepts a new user and responds with new user",
+    "request body": {
+      "username": "tweedy_impertinence",
+      "name": "lester",
+      "avatar_url":
+        "https://upload.wikimedia.org/wikipedia/en/3/31/Lester_Freamon.jpg"
+    },
+    "exampleResponse": {
+      "newUser": [
+        {
+          "username": "tweedy_impertinence",
+          "avatar_url": "https://upload.wikimedia.org/wikipedia/en/3/31/Lester_Freamon.jpg",
+          "name": "lester"
+        }
+      ]
     }
   }
 }
