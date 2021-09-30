@@ -12,6 +12,17 @@ exports.handlePSQL400Errors = (err, req, res, next) => {
   }
 };
 
+exports.handleOverwriteErrors = (err, req, res, next) => {
+  if (
+    err.code === "23505"
+    
+  ) {
+    res.status(400).send({ msg: "Already Exists" });
+  } else {
+    next(err);
+  }
+};
+
 exports.handleCustomErrors = (err, req, res, next) => {
   if (err.status) {
     res.status(err.status).send({ msg: err.msg });

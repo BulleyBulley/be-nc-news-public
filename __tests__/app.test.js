@@ -652,25 +652,64 @@ describe("GET /api/articles", () => {
 describe("POST /api/users", () => {
   test("201: Adds new user", async () => {
     const newUser = {
-      username: 'tweedy_impertinence',
-      name: 'lester',
+      username: "tweedy_impertinence",
+      name: "lester",
       avatar_url:
-        'https://upload.wikimedia.org/wikipedia/en/3/31/Lester_Freamon.jpg'
-    }
+        "https://upload.wikimedia.org/wikipedia/en/3/31/Lester_Freamon.jpg",
+    };
     const { body } = await request(app)
       .post(`/api/users`)
       .send(newUser)
-      .expect(201);
+      .expect(201)
     expect(body.newUser).toMatchObject([
       {
         username: expect.any(String),
         avatar_url: expect.any(String),
         name: expect.any(String),
-      }
+      },
     ]);
     const checkUser = await request(app)
-    .get(`/api/users/tweedy_impertinence`)
-    .expect(200)
+      .get(`/api/users/tweedy_impertinence`)
+      .expect(200);
   });
-})
+  
+  test("400: Bad Request for existing user", async () => {
+    const newUser = {
+      username: 'butter_bridge',
+      name: 'jonny',
+      avatar_url:
+        'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg'
+    };
+    const { body } = await request(app)
+      .post(`/api/users`)
+      .send(newUser)
+      .expect(400)
+      expect(body.msg).toBe("Already Exists");
+  });
+  test("400: Bad Request for missing column", async () => {
+    const newUser = {
+      username: "tweedy_impertinence",
+      avatar_url:
+        "https://upload.wikimedia.org/wikipedia/en/3/31/Lester_Freamon.jpg",
+    };
+    const { body } = await request(app)
+      .post(`/api/users`)
+      .send(newUser)
+      .expect(400)
+      expect(body.msg).toBe("Bad Request");
+  });
+  test("400: Bad Request for empty value", async () => {
+    const newUser = {
+      username: "tweedy_impertinence",
+      avatar_url:
+        "https://upload.wikimedia.org/wikipedia/en/3/31/Lester_Freamon.jpg",
+        name: null
+    };
+    const { body } = await request(app)
+      .post(`/api/users`)
+      .send(newUser)
+      .expect(400)
+      expect(body.msg).toBe("Bad Request");
+  });
 
+});

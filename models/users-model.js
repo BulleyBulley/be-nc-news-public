@@ -51,6 +51,6 @@ exports.insertNewUser = async (newUserInfo) => {
         RETURNING *;`,
     [username, avatar_url, name]
   );
-
+  
   return result.rows;
 };

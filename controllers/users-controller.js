@@ -43,11 +43,12 @@ exports.getUsers = async (req, res, next) => {
 
   exports.postNewUser = async (req, res, next) => {
     try {
-      
       const newUserInfo = req.body;
       const newUser = await insertNewUser(newUserInfo);
       res.status(201).send({ newUser });
+      
     } catch (err) {
+      
       next(err);
     }
   };
