@@ -6,7 +6,6 @@ const { handle500Errors, handleCustomErrors, handlePSQL400Errors, handleOverwrit
 
 app.use(cors())
 app.use(express.json());
-
 app.use("/api", apiRouter);
 app.use(handleOverwriteErrors)
 app.use(handlePSQL400Errors);
