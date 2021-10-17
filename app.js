@@ -1,10 +1,10 @@
 const apiRouter = require("./routes/api-router.js");
 const express = require("express");
 const app = express();
-//const cors = require('cors')
+const cors = require('cors')
 const { handle500Errors, handleCustomErrors, handlePSQL400Errors, handleOverwriteErrors,} = require("./errors/errors.js");
 
-//app.use(cors())
+app.use(cors())
 app.use(express.json());
 
 app.use("/api", apiRouter);
