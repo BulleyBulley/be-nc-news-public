@@ -21,11 +21,15 @@ exports.fetchCommentsByArticleId = async (article_id) => {
 exports.insertCommentByArticleId = async (article_id, newCommentInfo) => {
   const { username, body } = newCommentInfo;
 
-  const articleAndUserExists = await db.query(
-    "SELECT * FROM articles where article_id = $1 AND author = $2",
-    [article_id, username]
+  const articleExists = await db.query(
+    "SELECT * FROM articles where article_id = $1",
+    [article_id]
   );
-  if (articleAndUserExists.rows.length === 0) {
+  const userExists = await db.query(
+    "SELECT * FROM users where username = $1",[username]
+
+  )
+  if (articleExists.rows.length === 0 || userExists.rows.length === 0) {
     return Promise.reject({ status: 404, msg: "Not Found" });
   }
 
